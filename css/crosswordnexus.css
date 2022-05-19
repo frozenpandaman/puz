@@ -75,7 +75,7 @@ div.cw-main.loaded div.cw-open-holder {
 /* drag-and-drop style */
 div.has-advanced-upload {
 	outline: 2px dashed gray;
-	outline-offset: -15cpx;
+	outline-offset: -15px;
 }
 
 div.is-dragover {
