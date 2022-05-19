@@ -137,6 +137,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 									<button class="cw-menu-item cw-reveal-puzzle">Puzzle</button>
 								</div>
 							</div>
+							<div class="cw-menu-container cw-rebus-button">
+								<button type="button" class="cw-button">
+									Rebus
+								</button>
+							</div>
 							<div class="cw-menu-container">
 								<button type="button" class="cw-button">
 									Memory
@@ -398,6 +403,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 				this.context = this.canvas[0].getContext('2d');
 
 				this.settings_btn = this.root.find('.cw-settings-button');
+
+				this.rebus_btn = this.root.find('.cw-rebus-button');
 
 				this.hidden_input = this.root.find('input.cw-hidden-input');
 
@@ -787,6 +794,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 				this.settings_btn.off('click');
 
+				this.rebus_btn.off('click');
+
 				this.info_btn.off('click');
 				this.notepad_btn.off('click');
 				this.notepad_icon.off('click');
@@ -862,6 +871,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 				this.timer_button.on('click', $.proxy(this.toggleTimer, this));
 				// SETTINGS
 				this.settings_btn.on('click', $.proxy(this.openSettings, this));
+
+				// REBUS
+				this.rebus_btn.on('click', $.proxy(this.promptRebus, this));
 
 				// INFO
 				this.info_btn.on('click', $.proxy(this.showInfo, this));
@@ -1424,7 +1436,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						}
 						this.renderCells();
 						break;
-					case 27: // escape -- pulls up a rebus entry
+					case 27: // escape -- pulls up a rebus entry - same as promptRebus()
 						if (this.selected_cell && this.selected_word) {
 							var rebus_entry = prompt('Rebus:', '');
 							this.hiddenInputChanged(rebus_entry);
@@ -1812,6 +1824,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 			showNotepad() {
 				this.createModalBox('Notes', escape(this.notepad));
+			}
+
+			promptRebus() {
+				if (this.selected_cell && this.selected_word) {
+					var rebus_entry = prompt('Rebus:', '');
+					this.hiddenInputChanged(rebus_entry);
+				}
 			}
 
 			openSettings() {
