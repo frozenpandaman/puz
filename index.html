@@ -14,11 +14,8 @@
     <script src="lib/jquery.js"></script>
 
     <!-- for loading crosswords -->
-    <script src="lib/crossword-tools/jscrossword/jscrossword_combined.js"></script>
-
-    <!-- for printing -->
-    <script src="lib/crossword-tools/pdf_create/jspdf.min.js"></script>
-    <script src="lib/crossword-tools/pdf_create/xw_pdf.js"></script>
+    <!-- via https://github.com/crosswordnexus/crossword-tools/blob/main/jscrossword/jscrossword_combined.js -->
+    <script src="js/jscrossword_combined.js"></script>
 
     <style>
         html, body {
@@ -36,7 +33,8 @@
     (function(){
         // Grab puzzle from query string if available
         var url = new URL(window.location.href);
-        var puzzle = url.searchParams.get("puzzle");
+        var puzzle = url.searchParams.get("puz");
+        if (!puzzle) puzzle = url.searchParams.get("puzzle");
         if (!puzzle) puzzle = url.searchParams.get("file");
         var params = {};
         if (puzzle) {
