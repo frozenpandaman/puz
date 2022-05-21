@@ -105,7 +105,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 							Open puzzle file
 						</button>
 						<div class="cw-open-puzzle-formats">
-							<b>Accepted formats:</b> PUZ, JPZ, XML, CFP, iPUZ (partial)
+							<b>Accepted formats:</b> PUZ, JPZ, XML, CFP, IPUZ
 						</div>
 					</div>
 					<input type="file" class="cw-open-jpz" accept=".puz,.xml,.jpz,.xpz,.ipuz,.cfp">
@@ -579,7 +579,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						c.color = this.default_background_color;
 						c['background-color'] = this.default_background_color;
 					}
-					c.shape = c['background-shape'];
+					// ALWAYS USE SHADE INSTEAD OF CIRCLES - for now
+					// c.shape = c['background-shape'];
+					if (c['background-shape'] == 'circle') {
+						c.color = "#dcdcdc"
+					}
 
 					/* set a "shade_highlight" color */
 					// hex string to RGB array and vice versa
