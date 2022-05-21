@@ -1,4 +1,4 @@
-# HTML5 crossword puzzle reader
+# HTML5 crossword puzzle player
 
 Modified version of the [CrosswordNexus HTML5 Crossword Solver](https://github.com/crosswordnexus/html5-crossword-solver) to look & function more like the [NYT Crosswords site](https://www.nytimes.com/crosswords) and [Downforacross](https://github.com/downforacross/downforacross.com).
 

@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="HandheldFriendly" content="True">
-    <title>Crossword puzzle viewer</title>
+    <title>Crossword puzzle player</title>
     <link href="css/crosswordnexus.css" rel="stylesheet">
 
     <!-- the main crossword JavaScript -->
@@ -33,9 +33,8 @@
     (function(){
         // Grab puzzle from query string if available
         var url = new URL(window.location.href);
-        var puzzle = url.searchParams.get("puz");
+        var puzzle = url.searchParams.get("file");
         if (!puzzle) puzzle = url.searchParams.get("puzzle");
-        if (!puzzle) puzzle = url.searchParams.get("file");
         var params = {};
         if (puzzle) {
             params = {
