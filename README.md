@@ -16,7 +16,7 @@ The following file formats are supported:
 
  - "Check" function will not mark a square incorrect if its answer is a rebus
  - Word highlighting malfunctions in (very rarely-used) unchecked/unnumbered 1x1 squares
- - Shaded squares are not supported when viewing .puz files
+ - Shaded squares (colored backgrounds) are not supported when viewing .puz files
 
 ---
 
