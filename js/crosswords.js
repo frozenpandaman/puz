@@ -32,6 +32,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 			color_hilite: '#f8e473',
 			color_word_shade: '#baab56',
 			color_none: '#ffffff',
+			revealed_letter: '#2860d8',
+			incorrect_square: '#ff0000',
 			background_color_clue: '#666666',
 			default_background_color: '#c2ed7e',
 			font_color_clue: '#ffffff',
@@ -58,8 +60,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 		var SKIP_DOWN = 'down';
 		var SKIP_LEFT = 'left';
 		var SKIP_RIGHT = 'right';
-		var STORAGE_KEY = 'crossword_nexus_savegame';
-		var SETTINGS_STORAGE_KEY = 'crossword_nexus_settings';
+		var STORAGE_KEY = 'crossword_savegame';
+		var SETTINGS_STORAGE_KEY = 'crossword_settings';
 
 		// messages
 		var MSG_SAVED = 'Crossword saved';
@@ -134,7 +136,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 									Reveal
 								</button>
 								<div class="cw-menu">
-									<button class="cw-menu-item cw-reveal-letter">Letter</button>
+									<button class="cw-menu-item cw-reveal-letter">Square</button>
 									<button class="cw-menu-item cw-reveal-word">Word</button>
 									<button class="cw-menu-item cw-reveal-puzzle">Puzzle</button>
 								</div>
@@ -1286,24 +1288,28 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 							this.context.font =
 								this.cell_size / (1.1 + 0.5 * cell_letter_length) +
 								'px sans-serif';
-							if (cell.revealed) {
-								this.context.color = 'italic ' + this.context.font;
+							if (cell.revealed && cell.letter != '#' && cell.letter != '.') { // keep blocks black
+								// this.context.font = 'italic ' + this.context.font;
+								this.context.fillStyle = this.config.revealed_letter;
 							}
 							if (cell.checked) {
 								this.context.beginPath();
-								this.context.moveTo(cell_x, cell_y);
+								this.context.moveTo(cell_x, cell_y+this.cell_size);
 								this.context.lineTo(
 									cell_x + this.cell_size,
-									cell_y + this.cell_size
+									cell_y
 								);
-								//this.context.lineWidth = 5;
-								this.context.stroke();
+								this.context.lineWidth = 2;
+								this.context.strokeStyle = this.config.incorrect_square;
+								this.context.stroke(); // draw diagnonal line
+								this.context.lineWidth = 1;
+								this.context.strokeStyle = this.config.color_block;
 							}
 							this.context.textAlign = 'center';
 							this.context.textBaseline = 'middle';
 							// change font color for clue cells
 							if (cell.clue) {
-								this.context.fillStyle = this.config.font_color_clue;
+								this.context.fillStyle = 'this.config.font_color_clue';
 							}
 							// the y-offset changes if this is a "clue" block
 							// normally we slide the letter down to fit with numbers
@@ -1674,20 +1680,20 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 				}
 			}
 
-			moveToNextWord_OLD(to_previous) {
-				if (this.selected_word) {
-					var next_word = to_previous
-							? this.active_clues.getPreviousWord(this.selected_word)
-							: this.active_clues.getNextWord(this.selected_word),
-						cell;
-					if (next_word) {
-						cell = next_word.getFirstEmptyCell() || next_word.getFirstCell();
-						this.setActiveWord(next_word);
-						this.setActiveCell(cell);
-						this.renderCells();
-					}
-				}
-			}
+			// moveToNextWord_OLD(to_previous) {
+			// 	if (this.selected_word) {
+			// 		var next_word = to_previous
+			// 				? this.active_clues.getPreviousWord(this.selected_word)
+			// 				: this.active_clues.getNextWord(this.selected_word),
+			// 			cell;
+			// 		if (next_word) {
+			// 			cell = next_word.getFirstEmptyCell() || next_word.getFirstCell();
+			// 			this.setActiveWord(next_word);
+			// 			this.setActiveCell(cell);
+			// 			this.renderCells();
+			// 		}
+			// 	}
+			// }
 
 			moveToFirstCell(to_last) {
 				if (this.selected_word) {
@@ -1986,15 +1992,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 			/* Save the game to local storage */
 			saveGame() {
-				// fill jsxw
-				this.fillJsXw();
-				// stringify
-				const jsxw_str = JSON.stringify(this.jsxw);
+				this.fillJsXw(); // fill jsxw
+				const jsxw_str = JSON.stringify(this.jsxw); // stringify
 				// savegame name will just be STORAGE_KEY + title + ' • ' + author
-				//const savegame_name = STORAGE_KEY + this.title + ' • ' + this.author;
+				// const savegame_name = STORAGE_KEY + this.title + ' • ' + this.author;
 				const savegame_name = STORAGE_KEY;
 				localStorage.setItem(savegame_name, jsxw_str);
-				this.createModalBox('💾', 'Progress saved.');
+				this.createModalBox('Saved', 'Progress saved.');
 			}
 
 			/* Show "load game" menu" */
@@ -2016,7 +2020,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 					}
 				}
 				if (!innerHTML) {
-					innerHTML = 'No save games found.';
+					innerHTML = 'No saved games found.';
 				}
 
 				// Create a modal box
@@ -2025,13 +2029,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 					${innerHTML}
 				</div>
 				`;
-				this.createModalBox('Load Game', loadgameHTML);
+				this.createModalBox('Load game', loadgameHTML);
 			}
 
 			/* Load a game from local storage */
 			loadGame() {
 			//loadGame(savegame_name) {
-				//var savegame_name = 'crossword_nexus_savegameTest 3x3 • Alex Boisvert';
+				//var savegame_name = 'crossword_savegameTest 3x3 • Alex Boisvert';
 				var savegame_name = STORAGE_KEY;
 				var jsxw = JSON.parse(localStorage.getItem(savegame_name));
 				this.removeListeners();

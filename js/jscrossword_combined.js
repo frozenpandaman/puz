@@ -1229,7 +1229,6 @@ var ActiveXObject, parsedPuz, filecontents, PUZAPP = {};
         var sanity_check = bytes.match('ACROSS&DOWN');
         if (!sanity_check)
         {
-            console.log('Not a .puz file!');
             throw {
                 name: "BADMAGICNUMBER",
                 message: "File did not contain expected magic number, contained '" + filemagic + "'."
@@ -1269,7 +1268,6 @@ var ActiveXObject, parsedPuz, filecontents, PUZAPP = {};
                 sdw,
                 isBlack;
         if (filemagic !== "ACROSS&DOWN\u0000") {
-            console.log('Not a .puz file!');
             throw {
                 name: "BADMAGICNUMBER",
                 message: "File did not contain expected magic number, contained '" + filemagic + "'."

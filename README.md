@@ -15,7 +15,7 @@ The following file formats are supported:
 ### Caveats
 
  - No support for clue references/continuations (secondary highlight)
- - "Check" function will not mark a square incorrect if its answer is a rebus
+ - "Check" function will not mark a square incorrect if its answer is a rebus & do not show as the "revealed" color
  - Shaded squares (colored backgrounds) are not supported when viewing .puz files
  - Word highlighting malfunctions in (very rarely-used) unchecked/unnumbered 1x1 squares
 
