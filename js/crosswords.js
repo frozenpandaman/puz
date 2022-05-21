@@ -98,17 +98,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 					<div class="cw-overflow"></div>
 					<div class="cw-open-puzzle">
 						<div class="cw-open-puzzle-instructions">
-							Drag and drop a file here, or click the button to choose a file
-							to open.
+							Drag and drop a file here, or click the button to choose a file to open.
 						</div>
 						<button type="button" class="cw-button cw-button-open-puzzle">
 							Open puzzle file
 						</button>
 						<div class="cw-open-puzzle-formats">
-							<b>Accepted formats:</b> PUZ, JPZ, XML, CFP, IPUZ
+							<b>Accepted formats:</b> .ipuz, .json, .puz, .jpz, .xml, .cfp
+						</div>
+						<div class="cw-open-puzzle-note">
+							<i>Note: Puzzle rendering is performed locally in-browser – no data is uploaded to the server.</i>
 						</div>
 					</div>
-					<input type="file" class="cw-open-jpz" accept=".puz,.xml,.jpz,.xpz,.ipuz,.cfp">
+					<input type="file" class="cw-open-jpz" accept=".ipuz,.json,.puz,.jpz,.xml,.cfp">
 				</div>
 				<!-- End overlay -->
 				<header class="cw-header"></header>
