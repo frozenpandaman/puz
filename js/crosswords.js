@@ -583,11 +583,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						c.color = this.default_background_color;
 						c['background-color'] = this.default_background_color;
 					}
-					// ALWAYS USE SHADE INSTEAD OF CIRCLES - for now
-					// c.shape = c['background-shape'];
-					if (c['background-shape'] == 'circle') {
-						c.color = "#dcdcdc"
-					}
+					c.shape = c['background-shape'];
 
 					/* set a "shade_highlight" color */
 					// hex string to RGB array and vice versa
