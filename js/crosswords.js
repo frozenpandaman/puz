@@ -1,3 +1,4 @@
+/* modified by eli fessler */
 /**
 Copyright (c) 2015-2021, Crossword Nexus
 All rights reserved.
@@ -162,9 +163,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 							<button type="button" class="cw-button cw-button-timer">00:00</button>
 						</div>
 						<div class="cw-top-clue-bar">
+							<div class="cw-mobile cw-mobile-left" style="display: none;">
+								<i class="cw-chevron"></i>
+							</div>
 							<div class="cw-top-text">
 								<span class="cw-clue-number">1</span>
 								<span class="cw-clue-text">Clue</span>
+							</div>
+							<div class="cw-mobile cw-mobile-right" style="display: none;">
+								<i class="cw-chevron"></i>
 							</div>
 						</div>
 						<input type="text" class="cw-hidden-input">
@@ -402,6 +409,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 				this.clues_holder = this.root.find('div.cw-clues-holder');
 				this.clues_top_container = this.root.find('div.cw-clues-top');
 				this.clues_bottom_container = this.root.find('div.cw-clues-bottom');
+
+				this.arrow_right = this.root.find('div.cw-mobile-right');
+				this.arrow_left = this.root.find('div.cw-mobile-left');
+
 				this.canvas_holder = this.root.find('div.cw-canvas');
 				this.canvas = this.root.find('canvas');
 				this.context = this.canvas[0].getContext('2d');
@@ -838,6 +849,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 					this.canvas.on('mousemove', $.proxy(this.mouseMoved, this));
 				}
 				this.canvas.on('click', $.proxy(this.mouseClicked, this));
+
+				this.arrow_right.on('click', $.proxy(this.moveToNextWord, this, false, this.config.tab_key === 'tab_skip'));
+				this.arrow_left.on('click', $.proxy(this.moveToNextWord, this, true, this.config.tab_key === 'tab_skip'));
 
 				// REVEAL
 				this.reveal_letter.on(
@@ -1479,7 +1493,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 						break;
 					case 9: // tab
 						var skip_filled_words = this.config.tab_key === 'tab_skip';
-						if (e.shiftKey) {
+						if (e.shiftKey) { // previous word
 							this.moveToNextWord(true, skip_filled_words);
 						} else {
 							this.moveToNextWord(false, skip_filled_words);

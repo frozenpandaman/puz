@@ -168,7 +168,7 @@ input.cw-hidden-input {
 .cw-canvas {
 	display: inline-block;
 	flex: 1 1 auto;
-	margin: 10px 0;
+	margin: 10px;
 	min-height: 300px;
 	position: relative;
 	text-align: center;
@@ -180,11 +180,6 @@ canvas {
 .cw-canvas canvas {
 	margin: 0;
 	border: 2px solid #000;
-}
-
-.cw-top-clue-bar {
-	background: #dcefff;
-	flex-shrink: 0;
 }
 
 .cw-clues-holder {
@@ -470,19 +465,40 @@ canvas {
 }
 .cw-clues {
 	width: 350px;
+
 }
 .cw-top-clue-bar {
+	background: #dcefff;
+	flex-shrink: 0;
 	align-items: center;
 	display: flex;
 	height: 60px;
-	margin-top: 11px;
-	margin-left: 10px;
+	margin: 11px 10px 0;
+}
+.cw-mobile {
+	padding-right: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 60px;
+}
+.cw-mobile-left {
+	transform: rotate(180deg);
+}
+.cw-chevron {
+	margin-left: 5px;
+	background-image: url("../img/chevron.svg");
+	height: 18px;
+	width: 10px;
+	background-repeat: no-repeat;
+	background-size: contain;
 }
 .cw-top-text {
 	align-items: flex-start;
 	display: flex;
 	padding: 6px 15px 6px 15px;
 	line-height: 1.2;
+	flex-grow: 2;
 }
 .cw-clues-title {
 	align-items: flex-end;
@@ -505,7 +521,8 @@ canvas {
 .cw-max-width-1200.cw-main {
 	font-size: 16px;
 }
-.cw-max-width-1200 .cw-top-clue-bar {
+.cw-max-width-1200 .cw-top-clue-bar,
+.cw-max-width-1200 .cw-mobile {
 	height: 55px;
 }
 .cw-max-width-1200 .cw-top-text {
@@ -521,7 +538,8 @@ canvas {
 .cw-max-width-1080.cw-main {
 	font-size: 14px;
 }
-.cw-max-width-1080 .cw-top-clue-bar {
+.cw-max-width-1080 .cw-top-clue-bar,
+.cw-max-width-1000 .cw-mobile {
 	height: 45px;
 }
 .cw-max-width-1080 .cw-top-text {
@@ -544,15 +562,17 @@ canvas {
 .cw-max-width-600 .cw-clues-holder {
 	display: none;
 }
-.cw-max-width-600 .cw-header {
-	display: none;
-}
+
 .cw-max-width-600 .cw-buttons-holder {
 	height: 45px;
 	padding: 0 10px;
 }
-.cw-max-width-600 .cw-top-clue-bar {
+.cw-max-width-600 .cw-top-clue-bar,
+.cw-max-width-600 .cw-mobile {
 	height: 40px;
+}
+.cw-max-width-600 .cw-mobile {
+	display: flex !important;
 }
 
 .cw-max-width-420 .cw-button-icon {

@@ -1,3 +1,4 @@
+/* modified by eli fessler */
 /**
 * CFP (CrossFire) reading and writing functions
 **/
@@ -400,22 +401,24 @@ function xw_read_jpz(data1) {
             break;
         }
     }
-    data = BinaryStringToUTF8String(data);
-    // create a DOMParser object
-    var xml_string = data.replace('&nbsp;', ' ');
-    var parser, xmlDoc;
-    if (window.DOMParser) {
-        parser = new DOMParser();
-        xmlDoc = parser.parseFromString(xml_string, 'text/xml');
-    } else {
-        // Internet Explorer
-        xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
-        xmlDoc.async = false;
-        xmlDoc.loadXML(xml_string);
+    if (data != undefined) {
+        data = BinaryStringToUTF8String(data);
+        // create a DOMParser object
+        var xml_string = data.replace('&nbsp;', ' ');
+        var parser, xmlDoc;
+        if (window.DOMParser) {
+            parser = new DOMParser();
+            xmlDoc = parser.parseFromString(xml_string, 'text/xml');
+        } else {
+            // Internet Explorer
+            xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
+            xmlDoc.async = false;
+            xmlDoc.loadXML(xml_string);
+        }
+        var crossword, puzzle, jpz_metadata;
+        puzzle = xmlDoc.getElementsByTagName('rectangular-puzzle');
     }
-    var crossword, puzzle, jpz_metadata;
-    puzzle = xmlDoc.getElementsByTagName('rectangular-puzzle');
-    if (!puzzle.length) {
+    else {
         throw {
           name: ERR_PARSE_JPZ,
           message: 'Could not find puzzle data'
@@ -980,16 +983,21 @@ class JSCrossword {
             var puzdata = PUZAPP.parsepuz(data);
             js = jscrossword_from_puz(puzdata);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             try {
-                js = xw_read_jpz(data);
+                js = xw_read_ipuz(data);
             } catch (error2) {
-                console.log(error2);
+                // console.log(error2);
                 try {
-                  js = xw_read_ipuz(data);
+                  js = xw_read_jpz(data);
                 } catch (error3) {
                   console.log(error3);
-                  js = xw_read_cfp(data);
+                  try {
+                    js = xw_read_cfp(data);
+                  } catch (error4) {
+                    console.log("Cannot open file.");
+                    console.log(error4);
+                  }
                 }
             }
         }
