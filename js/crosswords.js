@@ -713,7 +713,7 @@ function adjustColor(color, amount) {
 					this.clues_bottom = down_group;
 					// Also, in a coded crossword, there's no reason to show the clues
 					$('div.cw-clues-holder').css({ display: 'none' });
-					$('div.cw-top-text-wrapper').css({ display: 'none' });
+					$('div.cw-top-text').css({ display: 'none' });
 					// Add some padding to the buttons holder
 					$('div.cw-buttons-holder').css({ padding: '0 10px' });
 
