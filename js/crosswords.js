@@ -415,11 +415,12 @@ function adjustColor(color, amount) {
 					DarkReader.enable({
 						brightness: 100,
 						contrast: 100,
-						grayscale: 0,
 						sepia: 0
 					});
 					this.config.color_none = '#252624';
 					this.config.font_color_fill = '#ddd4c5';
+					this.config.color_word = '#403413';
+					this.config.color_selected = '#a79514';
 				}
 
 				this.cell_size = 40;
@@ -2026,16 +2027,19 @@ function adjustColor(color, amount) {
 										DarkReader.enable({
 											brightness: 100,
 											contrast: 100,
-											grayscale: 0,
 											sepia: 0
 										});
 										this.config.color_none = '#252624';
 										this.config.font_color_fill = '#ddd4c5';
+										this.config.color_word = '#403413';
+										this.config.color_selected = '#a79514';
 										this.renderCells();
 									} else {
 										DarkReader.disable();
 										this.config.color_none = default_config.color_none;
 										this.config.font_color_fill = default_config.font_color_fill;
+										this.config.color_word = default_config.color_word;
+										this.config.color_selected = default_config.color_selected;
 										this.renderCells();
 									}
 								}
