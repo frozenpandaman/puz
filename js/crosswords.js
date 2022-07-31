@@ -93,7 +93,7 @@ function adjustColor(color, amount) {
 			space_bar: 'space_clear',
 			savegame_name: '',
 			filled_clue_color: '#999999',
-			timer_autostart: true,
+			timer_autostart: false,
 			dark_mode_enabled: false,
 			tab_key: 'tab_noskip'
 		};
@@ -1432,6 +1432,9 @@ function adjustColor(color, amount) {
 			}
 
 			keyPressed(e) {
+				if (!this.timer_running) {
+					this.toggleTimer();
+				}
 				if (this.settings_open) {
 					return;
 				}

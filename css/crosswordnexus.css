@@ -319,7 +319,6 @@ canvas {
 	background: #f0f0f0;
 }
 
-/* large green button for initial overlay */
 .cw-button-open-puzzle {
 	background: #6aa9f4;
 	color: white;
@@ -329,7 +328,6 @@ canvas {
 	background: #4e86c8;
 }
 
-/* medium-sized gray button for timer */
 .cw-button-timer {
 	--button-background-color: #fff;
 	color: #000000;
