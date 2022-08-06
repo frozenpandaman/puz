@@ -15,7 +15,11 @@ The following file formats are supported:
 ### Caveats
 
  - No support for clue references/continuations (secondary highlight)
- - "Check" function will not mark a square incorrect if its answer is a rebus & do not show as the "revealed" color
+ - Rebus bugs:
+   - Puzzle will be marked as solved if all squares except rebuses are correct, and rebus squares will be changed to show answers
+   - "Check" function will not mark a square incorrect if its answer is a rebus
+   - Non-blank squares which contain a rebus as the solution (whether filled in as such or not) will not change to the solved color upon revealing the puzzle solution
+ -  & do not show as the "revealed" color
  - Shaded squares (colored backgrounds) are not supported in .puz format
  - Word highlighting malfunctions in (very rarely-used) unchecked/unnumbered 1x1 squares
 
