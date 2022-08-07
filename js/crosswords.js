@@ -74,8 +74,8 @@ function adjustColor(color, amount) {
 		var default_config = {
 			hover_enabled: false,
 			color_hover: '#ffffaa',
-			color_selected: '#ffda00',
-			color_word: '#a7d8ff',
+			color_selected: '#ffda00', // yellow - current square
+			color_word: '#a7d8ff', // blue - rest of current word
 			color_hilite: '#f8e473',
 			color_word_shade: '#baab56',
 			color_none: '#ffffff',
@@ -200,8 +200,8 @@ function adjustColor(color, amount) {
 									Memory
 								</button>
 								<div class="cw-menu">
-									<button class="cw-menu-item cw-file-save">Save to memory</button>
-									<button class="cw-menu-item cw-file-load">Load from memory</button>
+									<button class="cw-menu-item cw-memory-save">Save to memory</button>
+									<button class="cw-menu-item cw-memory-load">Load from memory</button>
 								</div>
 							</div>
 							<button type="button" class="cw-button cw-settings-button">
@@ -333,10 +333,21 @@ function adjustColor(color, amount) {
 
 		// Function to check if a cell is solved correctly
 		function isCorrect(entry, solution) {
+
 			// if we have a rebus or non-alpha solution, accept anything
-			if (entry && (solution.length > 1 || /[^A-Za-z]/.test(solution))) {
-				return true;
+			// if (entry && (solution.length > 1 || /[^A-Za-z]/.test(solution))) {
+				// return true;
+			// }
+
+			// support schrödinger cells/multiple answers
+			if (entry && (solution.constructor === Array)) {
+				for (var i = 0; i < solution.length; i++) {
+					if (entry == solution[i]) { // if any of the answers are entered, it's correct
+						return true;
+					}
+				}
 			}
+
 			// otherwise, only mark as okay if we have an exact match
 			else {
 				return entry == solution;
@@ -493,10 +504,8 @@ function adjustColor(color, amount) {
 				this.check_puzzle = this.root.find('.cw-check-puzzle');
 
 				this.info_btn = this.root.find('.cw-file-info');
-				this.load_btn = this.root.find('.cw-file-load');
-				this.print_btn = this.root.find('.cw-file-print');
-				this.save_btn = this.root.find('.cw-file-save');
-				this.download_btn = this.root.find('.cw-file-download');
+				this.save_btn = this.root.find('.cw-memory-save');
+				this.load_btn = this.root.find('.cw-memory-load');
 
 				// Notepad button is hidden by default
 				this.notepad_btn = this.root.find('.cw-file-notepad');
@@ -658,9 +667,7 @@ function adjustColor(color, amount) {
 					c.shape = c['background-shape'];
 
 					if (c.color && c.color != this.config.color_none) {
-						//c.shade_highlight_color = averageColors(this.config.color_word, c.color);
 						c.shade_highlight_color = averageColors(this.config.color_word, adjustColor(c.color, -50));
-						//c.shade_highlight_color = adjustColor(c.color, -30);
 					}
 
 					this.cells[c.x][c.y] = c;
@@ -829,10 +836,9 @@ function adjustColor(color, amount) {
 				this.check_word.off('click');
 				this.check_puzzle.off('click');
 
-				this.print_btn.off('click');
-				this.load_btn.off('click');
 				this.save_btn.off('click');
-				this.download_btn.off('click');
+				this.load_btn.off('click');
+
 				this.timer_button.off('click');
 
 				this.settings_btn.off('click');
