@@ -1,25 +1,26 @@
 # HTML5 crossword puzzle player
 
-Modified version of the [CrosswordNexus HTML5 Crossword Solver](https://github.com/crosswordnexus/html5-crossword-solver) to look & function more like the [NYT Crosswords site](https://www.nytimes.com/crosswords) and [Downforacross](https://github.com/downforacross/downforacross.com), with added mobile support and more.
+Modified version of the [CrosswordNexus HTML5 Crossword Solver](https://github.com/crosswordnexus/html5-crossword-solver) to look & function more like the [NYT Crosswords site](https://www.nytimes.com/crosswords) and [Downforacross](https://github.com/downforacross/downforacross.com), with added features.
 
 Runs locally in your browser – no data is uploaded online.
 
 The following file formats are supported:
 
- - **.ipuz** [open format] (JSON) – [info](http://www.ipuz.org/), [more info](http://fileformats.archiveteam.org/wiki/IPUZ)
+ - **.ipuz** [open format] (JSON) – [info](http://www.ipuz.org/), [more info](http://fileformats.archiveteam.org/wiki/IPUZ) **_(recommended!)_**
  - **.puz** [Across Lite] (binary file) – [info](https://code.google.com/archive/p/puz/wikis/FileFormat.wiki), [more info](http://fileformats.archiveteam.org/wiki/PUZ_(crossword_puzzles)), [even more info](https://www.litsoft.com/across/docs/AcrossTextFormat.pdf)
  - **.jpz** [Crossword Compiler] (XML) – [info](http://crossword.info/docs/puzzle.xsd.html)
  - **.cfp** [CrossFire] (XML) _(only if no blank squares exist)_
 
-### Added support in this fork
-- Cells with multiple answers (Schrödinger cells)
-- Checking/revealing cells with rebuses
+### Added in this fork
+- [x] Mobile support & next/previous clue buttons
+- [x] Cells with multiple answers (Schrödinger cells)
+- [x] Checking/revealing cells with rebuses
 
-### Caveats
+### Missing features
 
- - No support for clue references/continuations (secondary highlight)
- - Shaded squares (colored backgrounds) are not supported in .puz format
- - Word highlighting malfunctions in (very rarely-used) unchecked/unnumbered 1x1 squares
+ - [ ] Clue references/continuations (secondary highlight)
+ - [ ] Support for shaded squares (colored backgrounds) in .puz format
+ - [ ] Word highlighting for unchecked/unnumbered squares
 
 ---
 
