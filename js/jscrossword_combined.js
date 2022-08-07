@@ -328,12 +328,12 @@ function xw_read_ipuz(data) {
 		var word_id = 1;
 		var acrossEntries = thisGrid.acrossEntries();
 		Object.keys(acrossEntries).forEach(function(i) {
-			var thisWord = {'id': word_id++, 'cells': acrossEntries[i]['cells']};
+			var thisWord = {'id': word_id++, 'cells': acrossEntries[i]['cells'], 'dir': 'across'};
 			words.push(thisWord);
 		});
 		var downEntries = thisGrid.downEntries();
 		Object.keys(downEntries).forEach(function(i) {
-			var thisWord = {'id': word_id++, 'cells': downEntries[i]['cells']};
+			var thisWord = {'id': word_id++, 'cells': downEntries[i]['cells'], 'dir': 'down'};
 			words.push(thisWord);
 		});
 	}
@@ -726,10 +726,22 @@ class xwGrid {
 
 	// both startAcrossWord and startDownWord have to account for bars
 	startAcrossWord(x, y) {
-		return this.hasBlack(x, y, 'left') && x < this.width - 1 && !this.isBlack(x, y) && !this.hasBlack(x, y, 'right');
+		if ((this.hasBlack(x, y, 'left') && this.hasBlack(x, y, 'top') && this.hasBlack(x, y, 'right')) ||
+			(this.hasBlack(x, y, 'left') && this.hasBlack(x, y, 'bottom') && this.hasBlack(x, y, 'right'))) {
+			return true; // obviously an intentional unchecked square, surrounded on 3 sides with blocks
+		}
+		else {
+			return this.hasBlack(x, y, 'left') && x < this.width - 1 && !this.isBlack(x, y) && !this.hasBlack(x, y, 'right');
+		}
 	}
 	startDownWord(x, y) {
-		return this.hasBlack(x, y, 'top') && y < this.height - 1 && !this.isBlack(x, y) && !this.hasBlack(x, y, 'bottom');
+		if ((this.hasBlack(x, y, 'top') && this.hasBlack(x, y, 'left') && this.hasBlack(x, y, 'bottom')) ||
+			(this.hasBlack(x, y, 'top') && this.hasBlack(x, y, 'right') && this.hasBlack(x, y, 'bottom'))) {
+			return true;
+		}
+		else {
+			return this.hasBlack(x, y, 'top') && y < this.height - 1 && !this.isBlack(x, y) && !this.hasBlack(x, y, 'bottom');
+		}
 	}
 	// An array of grid numbers
 	gridNumbering() {
@@ -768,6 +780,10 @@ class xwGrid {
 				}
 				// end the across entry if we hit the edge
 				if (this.hasBlack(x, y, 'right')) {
+					// but first, remove it from our words list if there's no letters in it
+					if (typeof acrossEntries[thisNum] == 'undefined' || acrossEntries[thisNum]['word'] == '') {
+						delete acrossEntries[thisNum];
+					}
 					thisNum = null;
 				}
 			}
@@ -792,6 +808,10 @@ class xwGrid {
 				}
 				// end the down entry if we hit the bottom
 				if (this.hasBlack(x, y, 'bottom')) {
+					// but first, remove it from our words list if there's no letters in it
+					if (typeof downEntries[thisNum] == 'undefined' || downEntries[thisNum]['word'] == '') {
+						delete downEntries[thisNum];
+					}
 					thisNum = null;
 				}
 			}

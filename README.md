@@ -12,15 +12,15 @@ The following file formats are supported:
  - **.cfp** [CrossFire] (XML) _(only if no blank squares exist)_
 
 ### Added in this fork
-- [x] Mobile support & next/previous clue buttons
-- [x] Cells with multiple answers (Schrödinger cells)
+- [x] Mobile display & next/previous clue buttons
+- [x] Support for cells with multiple answers (Schrödinger cells)
 - [x] Checking/revealing cells with rebuses
+- [x] Clues can be added for unchecked/unnumbered squares & navigation behaves correctly
 
 ### Missing features
 
  - [ ] Clue references/continuations (secondary highlight)
  - [ ] Support for shaded squares (colored backgrounds) in .puz format
- - [ ] Word highlighting for unchecked/unnumbered squares
 
 ---
 

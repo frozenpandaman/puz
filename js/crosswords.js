@@ -158,7 +158,7 @@ function adjustColor(color, amount) {
 							<b>Accepted formats:</b> .ipuz, .json, .puz, .jpz, .xml, .cfp
 						</div>
 						<div class="cw-open-puzzle-note">
-							<i>Note: Puzzle rendering is performed locally in-browser – no data is uploaded to the server.</i>
+							<i>Note: Runs locally in your browser – no data is uploaded online.</i>
 						</div>
 					</div>
 					<input type="file" class="cw-open-jpz" accept=".ipuz,.json,.puz,.jpz,.xml,.cfp">
@@ -765,6 +765,7 @@ function adjustColor(color, amount) {
 					var word = puzzle.words[i];
 					this.words[word.id] = new Word(this, {
 						id: word.id,
+						dir: word.dir,
 						cell_ranges: word.cells.map(function (c) {
 							var obj = {x: (c[0] + 1).toString(), y: (c[1] + 1).toString()};
 							return obj;
@@ -1039,12 +1040,13 @@ function adjustColor(color, amount) {
 			}
 
 			setActiveWord(word) {
-				if (word) {
+				console.log(word);
+				if (word) { // if null, clicked on a block
 					this.selected_word = word;
-					if (word.cell_ranges[0]['x'] == word.cell_ranges[1]['x'])
-						var dir = 'D';
-					else
+					if (word.dir == 'across')
 						var dir = 'A';
+					else
+						var dir = 'D';
 					this.top_text.html(`
 						<span class="cw-clue-number">
 							${escape(word.clue.number)}${dir}
@@ -2394,6 +2396,7 @@ function adjustColor(color, amount) {
 		class Word {
 			constructor(crossword, data) {
 				this.id = '';
+				this.dir = '';
 				this.cell_ranges = [];
 				this.cells = [];
 				this.clue = {};
@@ -2401,10 +2404,12 @@ function adjustColor(color, amount) {
 				if (data) {
 					if (
 						data.hasOwnProperty('id') &&
+						data.hasOwnProperty('dir') &&
 						data.hasOwnProperty('cell_ranges') &&
 						data.hasOwnProperty('clue')
 					) {
 						this.id = data.id;
+						this.dir = data.dir;
 						this.cell_ranges = data.cell_ranges;
 						this.clue = data.clue;
 						this.parseRanges();
