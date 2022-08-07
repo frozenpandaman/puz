@@ -6,10 +6,10 @@ Runs locally in your browser; no files are sent to the server.
 
 The following file formats are supported:
 
- - **.ipuz** [open format] (JSON) – [info](http://www.ipuz.org/), [more info](http://fileformats.archiveteam.org/wiki/IPUZ) _(partial, crossword-style only)_
+ - **.ipuz** [open format] (JSON) – [info](http://www.ipuz.org/), [more info](http://fileformats.archiveteam.org/wiki/IPUZ) _[partial, crossword-style only]_
  - **.puz** [Across Lite] (binary file) – [info](https://code.google.com/archive/p/puz/wikis/FileFormat.wiki), [more info](http://fileformats.archiveteam.org/wiki/PUZ_(crossword_puzzles)), [even more info](https://www.litsoft.com/across/docs/AcrossTextFormat.pdf)
  - **.jpz** [Crossword Compiler] (XML) – [info](http://crossword.info/docs/puzzle.xsd.html)
- - **.cfp** [CrossFire] (XML)
+ - **.cfp** [CrossFire] (XML) _[only with no blank squares]_
 
 
 ### Caveats
