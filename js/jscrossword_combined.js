@@ -161,7 +161,7 @@ function xw_read_ipuz(data) {
         'title': data['title'] || '',
         'author': data['author'] || '',
         'copyright': data['copyright'] || '',
-        'description': data.intro || '',
+        'description': data.notes || data.intro || '',
         'height': height,
         'width': width,
         'crossword_type': crossword_type,
