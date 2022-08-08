@@ -7,7 +7,7 @@ Runs locally in your browser – no data is uploaded online.
 The following file formats are supported:
 
  - **.ipuz** [open format] (JSON) – [info](http://www.ipuz.org/), [more info](http://fileformats.archiveteam.org/wiki/IPUZ) **_(recommended!)_**
- - **.puz** [Across Lite] (binary file) – [info](https://code.google.com/archive/p/puz/wikis/FileFormat.wiki), [more info](http://fileformats.archiveteam.org/wiki/PUZ_(crossword_puzzles)), [even more info](https://www.litsoft.com/across/docs/AcrossTextFormat.pdf)
+ - **.puz** [Across Lite] (binary file) – [info](https://code.google.com/archive/p/puz/wikis/FileFormat.wiki), [more info](http://fileformats.archiveteam.org/wiki/PUZ_(crossword_puzzles)), [even more info](https://www.litsoft.com/across/docs/AcrossTextFormat.pdf) _(no support for shaded squares)_
  - **.jpz** [Crossword Compiler] (XML) – [info](http://crossword.info/docs/puzzle.xsd.html)
  - **.cfp** [CrossFire] (XML) _(only if no blank squares exist)_
 
@@ -20,12 +20,28 @@ The following file formats are supported:
 ### Missing features
 
  - [ ] Clue references/continuations (secondary highlight)
- - [ ] Support for shaded squares (colored backgrounds) in .puz format
+ - [ ] Fading of sidebar clues when corresponding word is filled
 
 ---
 
 #### File format-related resources
 
- * [.puz → .jpz converter #1](https://jpd236.github.io/kotwords/crossword.html) (web app)
+ * [.puz → .jpz converter #1](https://jpd236.github.io/kotwords/crossword.html) (web tool)
  * [.puz → .jpz converter #2](https://github.com/crosswordnexus/crossword-tools/blob/main/jscrossword/index.html) (downloadable HTML file)
  * [.jpz → .ipuz converter](https://sourceforge.net/p/jpz2ipuz/code/HEAD/tree/jpz2ipuz.pl) (downloadable Perl script)
+
+#### Free crossword-related tools
+
+ * Constructing
+   * [Phil](https://www.jmviz.dev/Phil/) (jmviz fork with added features) &nbsp;•&nbsp; [CrossHatch](https://ben4808.github.io/) &nbsp;•&nbsp; [Crosshare](https://crosshare.org/construct) &nbsp;•&nbsp; [Crosserville](https://www.crosserville.com/)
+   * [Crossword Grid Search](https://ugleh.com/gridsearch/)
+ * Clueing/fill
+   * [XWordInfo Finder](https://www.xwordinfo.com/Finder) &amp; [Clue Search](https://www.xwordinfo.com/SearchClues) &nbsp;•&nbsp; [cluer](https://tiwwdty.com/clue/) (Matt Ginsberg's clue database)
+   * [BlockQuarry](https://blockquarry.net/) &nbsp;•&nbsp; [OneLook Dictionary Search](https://www.onelook.com/) &nbsp;•&nbsp; [Qat](https://www.quinapalus.com/cgi-bin/qat)
+   * [Wordlisted](https://aaronson.org/wordlisted/)
+ * Wordlists
+   * [spread the word(list)](https://www.spreadthewordlist.com/wordlist) &nbsp;•&nbsp; [Peter Broda's Wordlist](https://peterbroda.me/crosswords/wordlist/) &nbsp;•&nbsp; [Et Tu, Etui?](https://ettuetui.blogspot.com/2021/07/one-year-of-et-tu-etui.html) (memes) &nbsp;•&nbsp; [more](https://old.reddit.com/r/crossword/comments/nqsuku/all_the_downloadable_word_lists_ive_been_able_to/)
+ * Publication
+   * [PDF generator](https://njyoon.github.io/pdf)
+   * [Crossword Nexus Submission Checker](https://crosswordnexus.com/apps/submission_check/)
+   * [Publication specs GSheet](https://docs.google.com/spreadsheets/d/12HGynb2VpJR2akQPT7iCMUBXxqcwzmk3kJjic8F24Kk/edit?usp=sharing)
