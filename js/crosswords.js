@@ -1634,7 +1634,8 @@ function adjustColor(color, amount) {
 						// if found cell without letter or with incorrect letter - return
 						if (
 							!cell.empty &&
-							(!cell.letter || !isCorrect(cell.letter, cell.solution))
+							(!cell.letter || !isCorrect(cell.letter, cell.solution) &&
+							cell.letter.constructor !== Array) // fine if there are multiple answers
 						) {
 							return;
 						}
