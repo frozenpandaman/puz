@@ -964,13 +964,12 @@ function adjustColor(color, amount) {
 			}
 
 			// Create a generic modal box with content
-			createModalBox(title, content, button_text = 'Close') {
+			createModalBox(content, button_text = 'Close') {
 				// Set the contents of the modal box
 				const modalContent = `
 				<div class="modal-content">
 					<div class="modal-header">
 						<span class="modal-close">&times;</span>
-						<span class="modal-title">${title}</span>
 					</div>
 					<div class="modal-body">
 						${content}
@@ -1040,7 +1039,6 @@ function adjustColor(color, amount) {
 			}
 
 			setActiveWord(word) {
-				console.log(word);
 				if (word) { // if null, clicked on a block
 					this.selected_word = word;
 					if (word.dir == 'across')
@@ -1519,13 +1517,13 @@ function adjustColor(color, amount) {
 						break;
 					case 27: // escape -- pulls up a rebus entry - same as promptRebus()
 						if (this.selected_cell && this.selected_word) {
-							var rebus_entry = prompt('Rebus:', '');
+							var rebus_entry = prompt('Letters:', '');
 							this.hiddenInputChanged(rebus_entry);
 						}
 						break;
 					case 45: // insert -- same as escape
 						if (this.selected_cell && this.selected_word) {
-							var rebus_entry = prompt('Rebus:', '');
+							var rebus_entry = prompt('Letters:', '');
 							this.hiddenInputChanged(rebus_entry);
 						}
 						break;
@@ -1655,7 +1653,7 @@ function adjustColor(color, amount) {
 				}
 				// show completion message
 				var solvedMessage = escape(this.msg_solved).replaceAll('\n', '<br />');
-				this.createModalBox('Yay!', solvedMessage);
+				this.createModalBox(solvedMessage);
 			}
 
 			// callback for shift+arrows
@@ -1879,7 +1877,6 @@ function adjustColor(color, amount) {
 
 			showInfo() {
 				this.createModalBox(
-					'Info',
 					`
 						<p><b>${escape(this.title)}</b></p>
 						<p>${escape(this.author)}</p>
@@ -1889,12 +1886,12 @@ function adjustColor(color, amount) {
 			}
 
 			showNotepad() {
-				this.createModalBox('Notes', escape(this.notepad));
+				this.createModalBox(escape(this.notepad));
 			}
 
 			promptRebus() {
 				if (this.selected_cell && this.selected_word) {
-					var rebus_entry = prompt('Rebus:', '');
+					var rebus_entry = prompt('Letters:', '');
 					this.hiddenInputChanged(rebus_entry);
 				}
 			}
@@ -1944,7 +1941,7 @@ function adjustColor(color, amount) {
 					<!-- Space bar -->
 					<div class="settings-setting">
 						<div class="settings-description">
-							When pressing space bar
+							When pressing the space bar
 						</div>
 						<div class="settings-option">
 							<label class="settings-label">
@@ -1963,7 +1960,7 @@ function adjustColor(color, amount) {
 					<!-- Tab key -->
 					<div class="settings-setting">
 						<div class="settings-description">
-							When tabbing
+							When pressing tab
 						</div>
 						<div class="settings-option">
 							<label class="settings-label">
@@ -2009,7 +2006,7 @@ function adjustColor(color, amount) {
 
 				</div>
 				`;
-				this.createModalBox('Settings', settingsHTML);
+				this.createModalBox(settingsHTML);
 				// Show the proper value for each of these fields
 				var classChangers = document.getElementsByClassName('settings-changer');
 				for (var cc of classChangers) {
@@ -2088,7 +2085,7 @@ function adjustColor(color, amount) {
 				// const savegame_name = STORAGE_KEY + this.title + ' • ' + this.author;
 				const savegame_name = STORAGE_KEY;
 				localStorage.setItem(savegame_name, jsxw_str);
-				this.createModalBox('Saved', 'Progress saved.');
+				this.createModalBox('Progress saved.');
 			}
 
 			/* Show "load game" menu" */
@@ -2119,7 +2116,7 @@ function adjustColor(color, amount) {
 					${innerHTML}
 				</div>
 				`;
-				this.createModalBox('Load game', loadgameHTML);
+				this.createModalBox(loadgameHTML);
 			}
 
 			/* Load a game from local storage */

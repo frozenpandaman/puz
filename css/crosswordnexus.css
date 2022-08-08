@@ -265,11 +265,6 @@ canvas {
 	padding: 12px 16px;
 }
 
-/* Modal Title */
-.modal-title {
-	line-height: 40px; /* same as the containing div, to vertically center */
-}
-
 /* The Close Button */
 .modal-close {
 	color: white;
