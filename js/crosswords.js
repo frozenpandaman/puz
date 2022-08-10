@@ -79,20 +79,20 @@ function adjustColor(color, amount) {
 			color_hilite: '#f8e473',
 			color_word_shade: '#baab56',
 			color_none: '#ffffff',
-			revealed_letter: '#2860d8',
-			incorrect_square: '#ff0000',
+			revealed_letter: '#2860d8', // royal blue - revealed text
+			incorrect_square: '#ff0000', // red slash
 			background_color_clue: '#666666',
-			default_background_color: '#c2ed7e',
+			default_background_color: '#dcdcdc', // grey shade... but it's defined in the ipuz
 			font_color_clue: '#ffffff',
 			font_color_fill: '#000000',
 			color_block: '#000000',
+			filled_clue_color: '#999999',
 			puzzle_file: null,
 			puzzles: null,
 			skip_filled_letters: true,
 			arrow_direction: 'arrow_move_filled',
 			space_bar: 'space_clear',
 			savegame_name: '',
-			filled_clue_color: '#999999',
 			timer_autostart: false,
 			dark_mode_enabled: false,
 			tab_key: 'tab_noskip'
@@ -347,6 +347,8 @@ function adjustColor(color, amount) {
 					}
 				}
 			}
+
+			/// else if length > 1, check if ...
 
 			// otherwise, only mark as okay if we have an exact match
 			else {
@@ -1041,10 +1043,20 @@ function adjustColor(color, amount) {
 			setActiveWord(word) {
 				if (word) { // if null, clicked on a block
 					this.selected_word = word;
-					if (word.dir == 'across')
-						var dir = 'A';
-					else
-						var dir = 'D';
+
+					// will error on unchecked squares
+					try {
+						if (word.cell_ranges[0]['x'] == word.cell_ranges[1]['x'])
+							var dir = 'D';
+						else
+							var dir = 'A';
+					} catch (e) {
+						if (word.dir == 'across')
+							var dir = 'A';
+						else
+							var dir = 'D';
+					}
+
 					this.top_text.html(`
 						<span class="cw-clue-number">
 							${escape(word.clue.number)}${dir}
