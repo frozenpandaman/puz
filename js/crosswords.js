@@ -358,7 +358,7 @@ function adjustColor(color, amount) {
 				else if (entry.length == 3 && solution.length == 2) {
 					if ((entry[0] == solution[0] && entry[2] == solution[1]) ||
 						(entry[0] == solution[1] && entry[2] == solution[0])) {
-						if (entry[1] == "/" || entry[1] == "," || entry[1] == "\\" || entry[1] == "|")
+						if (entry[1] == "/" || entry[1] == "," || entry[1] == "\\" || entry[1] == "|" || entry[1] == " ")
 							return true;
 					}
 				} // same as above but using `, ` as a delimiter
