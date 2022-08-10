@@ -339,18 +339,38 @@ function adjustColor(color, amount) {
 				// return true;
 			// }
 
-			// support schrödinger cells/multiple answers
+			// schrödinger squares/multiple answers
 			if (entry && (solution.constructor === Array)) {
+				// go through the multiple answers. if any one is entered, it's correct
 				for (var i = 0; i < solution.length; i++) {
-					if (entry == solution[i]) { // if any of the answers are entered, it's correct
+					if (entry == solution[i]) {
 						return true;
 					}
 				}
+				// if answer is a rebus & contains both answers in either order, that's fine too
+				// (only works for cells with 2 answers, not 3+, fyi...)
+				if (entry.length == 2 && solution.length == 2) {
+					if (entry[0] == solution[0] && entry[1] == solution[1])
+						return true;
+					else if (entry[0] == solution[1] && entry[1] == solution[0]) // allow them to be switched, just in case
+						return true;
+				} // also fine to use `,` or `/` or similar as a delimiter in a rebus
+				else if (entry.length == 3 && solution.length == 2) {
+					if ((entry[0] == solution[0] && entry[2] == solution[1]) ||
+						(entry[0] == solution[1] && entry[2] == solution[0])) {
+						if (entry[1] == "/" || entry[1] == "," || entry[1] == "\\" || entry[1] == "|")
+							return true;
+					}
+				} // same as above but using `, ` as a delimiter
+				else if (entry.length == 4 && solution.length == 2) {
+					if ((entry[0] == solution[0] && entry[3] == solution[1]) ||
+						(entry[0] == solution[1] && entry[3] == solution[0])) {
+						if (entry[1] == "," && entry[2] == " ")
+							return true;
+					}
+				}
 			}
-
-			/// else if length > 1, check if ...
-
-			// otherwise, only mark as okay if we have an exact match
+			// rebus or regular answer - needs to be an exact match
 			else {
 				return entry == solution;
 			}
