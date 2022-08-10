@@ -2,7 +2,9 @@
 
 Modified version of the [CrosswordNexus HTML5 Crossword Solver](https://github.com/crosswordnexus/html5-crossword-solver) to look & function more like the [NYT Crosswords site](https://www.nytimes.com/crosswords) and [Downforacross](https://github.com/downforacross/downforacross.com), with added features.
 
-Runs locally in your browser – no data is uploaded online.
+**Link: [https://frozenpandaman.github.io/puz/](https://frozenpandaman.github.io/puz/)**
+
+Alternatively, specify a file to load automatically using the `?file=myxw.ipuz` parameter at the end of the URL.
 
 The following file formats are supported:
 
@@ -11,9 +13,11 @@ The following file formats are supported:
  - **.jpz** [Crossword Compiler] (XML) – [info](http://crossword.info/docs/puzzle.xsd.html)
  - **.cfp** [CrossFire] (XML) _(only if no blank squares exist)_
 
+---
+
 ### Added in this fork
 - [x] Mobile display & next/previous clue buttons
-- [x] Support for cells with multiple answers (Schrödinger cells)
+- [x] Support for cells with multiple answers (Schrödinger squares)
 - [x] Checking/revealing cells with rebuses
 - [x] Clues can be added for unchecked/unnumbered squares & navigation behaves correctly
 
@@ -35,12 +39,12 @@ The following file formats are supported:
  * Constructing
    * [Phil](https://www.jmviz.dev/Phil/) (jmviz fork with added features) &nbsp;•&nbsp; [CrossHatch](https://ben4808.github.io/) &nbsp;•&nbsp; [Crosshare](https://crosshare.org/construct) &nbsp;•&nbsp; [Crosserville](https://www.crosserville.com/)
    * [Crossword Grid Search](https://ugleh.com/gridsearch/)
- * Clueing/fill
+ * Clueing & fill
    * [XWordInfo Finder](https://www.xwordinfo.com/Finder) &amp; [Clue Search](https://www.xwordinfo.com/SearchClues) &nbsp;•&nbsp; [cluer](https://tiwwdty.com/clue/) (Matt Ginsberg's clue database)
    * [BlockQuarry](https://blockquarry.net/) &nbsp;•&nbsp; [OneLook Dictionary Search](https://www.onelook.com/) &nbsp;•&nbsp; [Qat](https://www.quinapalus.com/cgi-bin/qat)
-   * [Wordlisted](https://aaronson.org/wordlisted/)
- * Wordlists
+ * Wordlists & tools
    * [spread the word(list)](https://www.spreadthewordlist.com/wordlist) &nbsp;•&nbsp; [Peter Broda's Wordlist](https://peterbroda.me/crosswords/wordlist/) &nbsp;•&nbsp; [Et Tu, Etui?](https://ettuetui.blogspot.com/2021/07/one-year-of-et-tu-etui.html) (memes) &nbsp;•&nbsp; [more](https://old.reddit.com/r/crossword/comments/nqsuku/all_the_downloadable_word_lists_ive_been_able_to/)
+   * [Wordlisted](https://aaronson.org/wordlisted/)
  * Publication
    * [PDF generator](https://njyoon.github.io/pdf)
    * [Crossword Nexus Submission Checker](https://crosswordnexus.com/apps/submission_check/)
