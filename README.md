@@ -11,7 +11,7 @@ The following file formats are supported:
  - **.ipuz** [open format] (JSON) – [info](http://www.ipuz.org/), [more info](http://fileformats.archiveteam.org/wiki/IPUZ) **_(recommended!)_**
  - **.puz** [Across Lite] (binary file) – [info](https://code.google.com/archive/p/puz/wikis/FileFormat.wiki), [more info](http://fileformats.archiveteam.org/wiki/PUZ_(crossword_puzzles)), [even more info](https://www.litsoft.com/across/docs/AcrossTextFormat.pdf) _(no support for shaded squares)_
  - **.jpz** [Crossword Compiler] (XML) – [info](http://crossword.info/docs/puzzle.xsd.html)
- - **.cfp** [CrossFire] (XML) _(only if no blank squares exist)_
+ - **.cfp** [CrossFire] (XML) _(only if no unchecked squares exist)_
 
 ---
 
