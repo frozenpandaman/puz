@@ -99,12 +99,9 @@ function adjustColor(color, amount) {
 		};
 
 		// constants
-		var FILE_JPZ = 'jpz';
 		var FILE_PUZ = 'puz';
 		var CLUES_TOP = 'clues_top';
 		var CLUES_BOTTOM = 'clues_bottom';
-		var MIN_SIZE = 10;
-		var MAX_SIZE = 100;
 		var SKIP_UP = 'up';
 		var SKIP_DOWN = 'down';
 		var SKIP_LEFT = 'left';
@@ -113,27 +110,13 @@ function adjustColor(color, amount) {
 		var SETTINGS_STORAGE_KEY = 'crossword_settings';
 
 		// messages
-		var MSG_SAVED = 'Crossword saved';
-		var MSG_LOADED = 'Crossword loaded';
 		var MSG_SOLVED = 'Crossword solved! Congratulations!';
 
-		var MAX_CLUES_LENGTH = 2;
-
 		var TYPE_UNDEFINED = typeof undefined;
-		var XMLDOM_ELEMENT = 1;
-		var XMLDOM_TEXT = 3;
-		var ZIPJS_CONFIG_OPTION = 'zipjs_path';
-		var ZIPJS_PATH = 'lib/zip';
 
 		// errors
 		var ERR_FILE_LOAD = 'Error loading file';
-		var ERR_PARSE_JPZ = 'Error parsing JPZ file... Not JPZ or zipped JPZ file.';
-		var ERR_NOT_CROSSWORD = 'Error opening file. Probably not a crossword.';
 		var ERR_NO_JQUERY = 'jQuery not found';
-		var ERR_CLUES_GROUPS = 'Wrong number of clues in jpz file';
-		var ERR_NO_PUZJS = 'Puz js not found';
-		var ERR_LOAD = 'Error loading savegame - probably corrupted';
-		var ERR_NO_SAVEGAME = 'No saved game found';
 
 		var load_error = false;
 
