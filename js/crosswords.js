@@ -2158,12 +2158,21 @@ function adjustColor(color, amount) {
 
 			/* Load a game from local storage */
 			loadGame() {
-			//loadGame(savegame_name) {
-				//var savegame_name = 'crossword_savegameTest 3x3 • Alex Boisvert';
-				var savegame_name = STORAGE_KEY;
-				var jsxw = JSON.parse(localStorage.getItem(savegame_name));
-				this.removeListeners();
-				this.parsePuzzle(jsxw);
+				try {
+					var savegame_name = STORAGE_KEY;
+					var jsxw = JSON.parse(localStorage.getItem(savegame_name));
+					this.removeListeners();
+					this.parsePuzzle(jsxw);
+					this.createModalBox('Progress loaded.');
+				} catch (e) {
+					this.createModalBox('Progress could not be loaded.');
+
+					this.addListeners(); // don't disable the page...
+
+					const menuContainer = $(event.target).closest('.cw-menu-container');
+					const menu = menuContainer.find('.cw-menu');
+					menu.hide();
+				}
 			}
 
 			check_reveal(to_solve, reveal_or_check, e) {
