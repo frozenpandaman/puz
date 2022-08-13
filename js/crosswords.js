@@ -1992,6 +1992,20 @@ function adjustColor(color, amount) {
 						</div>
 					</div>
 
+					<!-- Hover -->
+					<div class="settings-setting">
+						<div class="settings-description">
+							Hover
+						</div>
+						<div class="settings-option">
+							<label class="settings-label">
+								<input id="hover_enabled" checked="" type="checkbox" name="hover_enabled" class="settings-changer">
+									Show hover while moving mouse over grid
+								</input>
+							</label>
+						</div>
+					</div>
+
 					<!-- Timer -->
 					<div class="settings-setting">
 						<div class="settings-description">
@@ -2068,6 +2082,13 @@ function adjustColor(color, amount) {
 								this.config[event.target.name] = event.target.id;
 							}
 						}
+
+						// instantly enable hover if it got turned on
+						if (this.config.hover_enabled) {
+							this.canvas.on('mousemove', $.proxy(this.mouseMoved, this));
+						}
+						this.renderCells(); // refresh cells to clear/show hover if necessary
+
 						this.saveSettings();
 					});
 			}
