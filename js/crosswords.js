@@ -72,21 +72,19 @@ function adjustColor(color, amount) {
 		'use strict';
 
 		var default_config = {
-			hover_enabled: false,
-			color_hover: '#ffffaa',
+			color_block: '#000000', // black blocks
+			color_none: '#ffffff', // white bg
+			font_color_fill: '#000000', // black text
 			color_selected: '#ffda00', // yellow - current square
 			color_word: '#a7d8ff', // blue - rest of current word
-			color_hilite: '#f8e473',
-			color_word_shade: '#baab56',
-			color_none: '#ffffff',
 			revealed_letter: '#2860d8', // royal blue - revealed text
-			incorrect_square: '#ff0000', // red slash
-			background_color_clue: '#666666',
+			incorrect_square: '#ff0000', // red slash - incorrect square on check
 			default_background_color: '#dcdcdc', // grey shade... but it's defined in the ipuz
+			color_hover: '#ffffaa', // light yellow hover cursor
+			color_hilite: '#f8e473',
 			font_color_clue: '#ffffff',
-			font_color_fill: '#000000',
-			color_block: '#000000',
-			filled_clue_color: '#999999',
+			background_color_clue: '#666666',
+			hover_enabled: false,
 			puzzle_file: null,
 			puzzles: null,
 			skip_filled_letters: true,
@@ -512,9 +510,9 @@ function adjustColor(color, amount) {
 				this.save_btn = this.root.find('.cw-memory-save');
 				this.load_btn = this.root.find('.cw-memory-load');
 
-				// Notepad button is hidden by default
-				this.notepad_btn = this.root.find('.cw-file-notepad');
-				this.notepad_btn.hide();
+				// Notes button is hidden by default
+				this.notes_btn = this.root.find('.cw-file-notes');
+				this.notes_btn.hide();
 
 				this.timer_button = this.root.find('.cw-button-timer');
 				this.xw_timer_seconds = 0;
@@ -629,7 +627,7 @@ function adjustColor(color, amount) {
 					this.is_autofill = true;
 				}
 
-				this.notepad = puzzle.metadata.description || '';
+				this.notes = puzzle.metadata.description || '';
 				this.grid_width = puzzle.metadata.width;
 				this.grid_height = puzzle.metadata.height;
 				// disable check and reveal in certain cases
@@ -785,12 +783,12 @@ function adjustColor(color, amount) {
 				$('.cw-header').html(`
 					<span class="cw-title">${escape(this.title)}</span>
 					<span class="cw-author">by ${escape(this.author)}</span>
-				${ this.notepad ? `<button class="cw-button cw-button-notepad">Notes</button>` : '' }
+				${ this.notes ? `<button class="cw-button cw-button-notes">Notes</button>` : '' }
 					<span class="cw-flex-spacer"></span>
 					<span class="cw-copyright">${escape(this.copyright)}</span>
 				`);
 
-				this.notepad_icon = this.root.find('.cw-button-notepad');
+				this.notes_icon = this.root.find('.cw-button-notes');
 
 				this.changeActiveClues();
 
@@ -852,8 +850,8 @@ function adjustColor(color, amount) {
 				this.rebus_btn.off('click');
 
 				this.info_btn.off('click');
-				this.notepad_btn.off('click');
-				this.notepad_icon.off('click');
+				this.notes_btn.off('click');
+				this.notes_icon.off('click');
 
 				this.hidden_input.off('input');
 				this.hidden_input.off('keydown');
@@ -936,12 +934,12 @@ function adjustColor(color, amount) {
 				// INFO
 				this.info_btn.on('click', $.proxy(this.showInfo, this));
 
-				// NOTEPAD
-				if (this.notepad) {
-					this.notepad_icon.on('click', $.proxy(this.showNotepad, this));
-					this.notepad_btn.show();
+				// NOTES BUTTON
+				if (this.notes) {
+					this.notes_icon.on('click', $.proxy(this.showNotes, this));
+					this.notes_btn.show();
 				}
-				this.notepad_btn.on('click', $.proxy(this.showNotepad, this));
+				this.notes_btn.on('click', $.proxy(this.showNotes, this));
 
 				// type letters
 				this.hidden_input.on(
@@ -1901,8 +1899,8 @@ function adjustColor(color, amount) {
 				);
 			}
 
-			showNotepad() {
-				this.createModalBox(escape(this.notepad));
+			showNotes() {
+				this.createModalBox(escape(this.notes));
 			}
 
 			promptRebus() {
