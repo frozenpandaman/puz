@@ -456,6 +456,7 @@ function adjustColor(color, amount) {
 				this.hilited_word = null;
 				this.selected_cell = null;
 				this.settings_open = false;
+
 				// TIMER
 				this.timer_running = false;
 
@@ -1045,6 +1046,7 @@ function adjustColor(color, amount) {
 			}
 
 			setActiveWord(word) {
+				console.log(word);
 				if (word) { // if null, clicked on a block
 					this.selected_word = word;
 
@@ -1163,6 +1165,18 @@ function adjustColor(color, amount) {
 				// set the fill style
 				this.context.fillStyle = this.config.color_block;
 
+				// if the word has references to any others
+				if (this.selected_word.refs_raw) {
+					// only support ONE REFERENCE PER CLUE for now
+					var search_num = this.selected_word.refs_raw[0].number;
+					var search_dir = this.selected_word.refs_raw[0].direction.toLowerCase();
+					for (var i in this.words) {
+						if (this.words[i].clue.number == search_num && this.words[i].dir == search_dir) {
+							var secondary_highlight_cells = this.words[i].cell_ranges;
+						}
+					}
+				}
+
 				for (x in this.cells) {
 					for (y in this.cells[x]) {
 						var cell = this.cells[x][y],
@@ -1177,6 +1191,13 @@ function adjustColor(color, amount) {
 							// clue list reference hover highlight
 							if (this.config.hilite_enabled && this.hilited_word && this.hilited_word.hasCell(cell.x, cell.y)) {
 								color = this.config.color_hilite;
+							}
+
+							// clue is referenced by some other one
+							if (secondary_highlight_cells &&
+								secondary_highlight_cells.some(c => c.x == cell.x) &&
+								secondary_highlight_cells.some(c => c.y == cell.y)) {
+								color = this.config.color_secondary;
 							}
 
 							// selected word blue
@@ -1912,7 +1933,7 @@ function adjustColor(color, amount) {
 					<!-- Skip filled letters -->
 					<div class="settings-setting">
 						<div class="settings-description">
-							While filling a word
+							While filling in a word
 						</div>
 						<div class="settings-option">
 							<label class="settings-label">
@@ -1988,7 +2009,7 @@ function adjustColor(color, amount) {
 					<!-- Hover -->
 					<div class="settings-setting">
 						<div class="settings-description">
-							Hover
+							When hovering
 						</div>
 						<div class="settings-option">
 							<label class="settings-label">
@@ -1998,7 +2019,7 @@ function adjustColor(color, amount) {
 							</label>
 							<label class="settings-label">
 								<input id="hilite_enabled" checked="" type="checkbox" name="hilite_enabled" class="settings-changer">
-									Highlight corresponding words while mousing over clues
+									Highlight corresponding grid entries while mousing over clues
 								</input>
 							</label>
 						</div>

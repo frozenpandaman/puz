@@ -17,13 +17,14 @@ The following file formats are supported:
 
 ### Added in this fork
 - [x] Mobile display & next/previous clue buttons
+- [x] Clue references/continuations (secondary highlight)
 - [x] Support for cells with multiple answers (Schrödinger squares)
 - [x] Checking/revealing cells with rebuses
+- [x] Option to highlight corresponding grid entries while mousing over clues in the clue list
 - [x] Clues can be added for unchecked/unnumbered squares & navigation behaves correctly
 
 ### Missing features
 
- - [ ] Clue references/continuations (secondary highlight)
  - [ ] Fading of sidebar clues when corresponding word is filled
 
 ---
