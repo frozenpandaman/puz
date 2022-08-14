@@ -328,7 +328,6 @@ function adjustColor(color, amount) {
 			if (solution) { // blank cells, maybe?
 				solution = solution.toUpperCase();
 			}
-			console.log("entry: ", entry, "  solution: ", solution);
 
 			// schrödinger squares/multiple answers
 			if (entry && (solution.constructor === Array)) {
@@ -448,8 +447,6 @@ function adjustColor(color, amount) {
 				}
 
 				this.cell_size = 40;
-				//this.top_text_height = 0;
-				//this.bottom_text_height = 0;
 				this.grid_width = 0;
 				this.grid_height = 0;
 				this.cells = {};
@@ -465,7 +462,7 @@ function adjustColor(color, amount) {
 				this.selected_cell = null;
 				this.settings_open = false;
 
-				// TIMER
+				// Timer
 				this.timer_running = false;
 
 				// Solution message
@@ -491,7 +488,6 @@ function adjustColor(color, amount) {
 				// build structures
 				this.root = $(template);
 				this.top_text = this.root.find('div.cw-top-text');
-				//this.bottom_text = this.root.find('div.cw-bottom-text');
 				this.clues_holder = this.root.find('div.cw-clues-holder');
 				this.clues_top_container = this.root.find('div.cw-clues-top');
 				this.clues_bottom_container = this.root.find('div.cw-clues-bottom');
@@ -517,7 +513,6 @@ function adjustColor(color, amount) {
 				this.check_word = this.root.find('.cw-check-word');
 				this.check_puzzle = this.root.find('.cw-check-puzzle');
 
-				this.info_btn = this.root.find('.cw-file-info');
 				this.save_btn = this.root.find('.cw-memory-save');
 				this.load_btn = this.root.find('.cw-memory-load');
 
@@ -824,7 +819,6 @@ function adjustColor(color, amount) {
 					this.toggleTimer();
 				}
 
-				//this.adjustPaddings();
 				this.renderCells();
 			}
 
@@ -861,7 +855,6 @@ function adjustColor(color, amount) {
 
 				this.rebus_btn.off('click');
 
-				this.info_btn.off('click');
 				this.notes_btn.off('click');
 				this.notes_icon.off('click');
 
@@ -942,9 +935,6 @@ function adjustColor(color, amount) {
 
 				// REBUS
 				this.rebus_btn.on('click', $.proxy(this.promptRebus, this));
-
-				// INFO
-				this.info_btn.on('click', $.proxy(this.showInfo, this));
 
 				// NOTES BUTTON
 				if (this.notes) {
@@ -1451,22 +1441,15 @@ function adjustColor(color, amount) {
 					index_x = Math.ceil(mouse_x / this.cell_size),
 					index_y = Math.ceil(mouse_y / this.cell_size);
 
-				if (
-					this.selected_cell &&
-					this.selected_cell.x == index_x &&
-					this.selected_cell.y == index_y
-				) {
+				if (this.selected_cell && this.selected_cell.x == index_x && this.selected_cell.y == index_y) {
 					this.changeActiveClues();
 				}
 
 				if (this.active_clues.getMatchingWord(index_x, index_y, true)) {
-					this.setActiveWord(
-						this.active_clues.getMatchingWord(index_x, index_y, true)
-					);
-				} else {
-					this.setActiveWord(
-						this.inactive_clues.getMatchingWord(index_x, index_y, true)
-					);
+					this.setActiveWord(this.active_clues.getMatchingWord(index_x, index_y, true));
+				}
+				else {
+					this.setActiveWord(this.inactive_clues.getMatchingWord(index_x, index_y, true));
 					this.changeActiveClues();
 				}
 				this.setActiveCell(this.getCell(index_x, index_y));
@@ -1482,8 +1465,7 @@ function adjustColor(color, amount) {
 				}
 
 				// to prevent event propagation for specified keys
-				var prevent =
-					[35, 36, 37, 38, 39, 40, 32, 46, 8, 9, 13].indexOf(e.keyCode) >= 0;
+				var prevent = [35, 36, 37, 38, 39, 40, 32, 46, 8, 9, 13].indexOf(e.keyCode) >= 0;
 
 				switch (e.keyCode) {
 					case 35: // end
@@ -1630,13 +1612,10 @@ function adjustColor(color, amount) {
 					}
 					this.selected_cell.checked = false;
 
-					// If this is a coded or acrostic
-					// find all cells with this number
-					// and fill them with the same letter
+					// If coded or acrostic, find all cells with this number & fill them with the same letter
 					this.autofill();
 
-					// find empty cell, then next cell
-					// Change this depending on config
+					// find empty cell, then next cell - Change this depending on config
 					if (this.config.skip_filled_letters) {
 						next_cell =
 							this.selected_word.getFirstEmptyCell(
@@ -1911,16 +1890,6 @@ function adjustColor(color, amount) {
 				}
 			}
 
-			showInfo() {
-				this.createModalBox(
-					`
-						<p><b>${escape(this.title)}</b></p>
-						<p>${escape(this.author)}</p>
-						<p><i>${escape(this.copyright)}</i></p>
-					`
-				);
-			}
-
 			showNotes() {
 				this.createModalBox(escape(this.notes));
 			}
@@ -2143,43 +2112,41 @@ function adjustColor(color, amount) {
 			saveGame() {
 				this.fillJsXw(); // fill jsxw
 				const jsxw_str = JSON.stringify(this.jsxw); // stringify
-				// savegame name will just be STORAGE_KEY + title + ' • ' + author
-				// const savegame_name = STORAGE_KEY + this.title + ' • ' + this.author;
 				const savegame_name = STORAGE_KEY;
 				localStorage.setItem(savegame_name, jsxw_str);
 				this.createModalBox('Progress saved.');
 			}
 
-			/* Show "load game" menu" */
-			loadGameMenu() {
-				// Find all the savegames
-				var innerHTML = '';
-				for (var i = 0; i < localStorage.length; i++){
-					var thisKey = localStorage.key(i);
-					if (thisKey.startsWith(STORAGE_KEY)) {
-						var thisJsXw = JSON.parse(localStorage.getItem(localStorage.key(i)));
-						var thisDisplay = thisKey.substr(STORAGE_KEY.length);
-						innerHTML += `
-						<label class="settings-label">
-							<input id="${thisKey}" checked="" type="radio" class="loadgame-changer">
-								${thisDisplay}
-							</input>
-						</label>
-						`;
-					}
-				}
-				if (!innerHTML) {
-					innerHTML = 'No saved games found.';
-				}
+			/* Show "load game" menu */
+			// loadGameMenu() {
+			// 	// Find all the savegames
+			// 	var innerHTML = '';
+			// 	for (var i = 0; i < localStorage.length; i++){
+			// 		var thisKey = localStorage.key(i);
+			// 		if (thisKey.startsWith(STORAGE_KEY)) {
+			// 			var thisJsXw = JSON.parse(localStorage.getItem(localStorage.key(i)));
+			// 			var thisDisplay = thisKey.substr(STORAGE_KEY.length);
+			// 			innerHTML += `
+			// 			<label class="settings-label">
+			// 				<input id="${thisKey}" checked="" type="radio" class="loadgame-changer">
+			// 					${thisDisplay}
+			// 				</input>
+			// 			</label>
+			// 			`;
+			// 		}
+			// 	}
+			// 	if (!innerHTML) {
+			// 		innerHTML = 'No saved games found.';
+			// 	}
 
-				// Create a modal box
-				var loadgameHTML = `
-				<div class="loadgame-wrapper">
-					${innerHTML}
-				</div>
-				`;
-				this.createModalBox(loadgameHTML);
-			}
+			// 	// Create a modal box
+			// 	var loadgameHTML = `
+			// 	<div class="loadgame-wrapper">
+			// 		${innerHTML}
+			// 	</div>
+			// 	`;
+			// 	this.createModalBox(loadgameHTML);
+			// }
 
 			/* Load a game from local storage */
 			loadGame() {
