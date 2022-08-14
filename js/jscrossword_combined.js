@@ -294,16 +294,19 @@ function xw_read_ipuz(data) {
 	titles.forEach( function(title) {
 		var thisClues = [];
 		data['clues'][title].forEach( function (clue) {
-			var number, text;
+			var number, text, refs;
 			// a "clue" can be an array or an object
-			if (Array.isArray(clue)) {
+			if (Array.isArray(clue)) { // simple array of 2 items
 				number = clue[0].toString();
 				text = clue[1];
-			} else {
+			} else { // has other properties, e.g. CrossReference dictionary/ies
 				number = clue.number.toString();
 				text = clue.clue;
+				dict_references = clue.references;
+				dict_continued = clue.continued;
+				refs = Object.assign({}, dict_references, dict_continued); // treat these as the same
 			}
-			thisClues.push({'word': word_id, 'number': number, 'text': text});
+			thisClues.push({'word': word_id, 'number': number, 'text': text, 'refs': refs});
 			// Cells are coupled with clues in iPuz
 			if (clue.cells) {
 				var thisCells = [];

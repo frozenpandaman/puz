@@ -80,11 +80,13 @@ function adjustColor(color, amount) {
 			revealed_letter: '#2860d8', // royal blue - revealed text
 			incorrect_square: '#ff0000', // red slash - incorrect square on check
 			default_background_color: '#dcdcdc', // grey shade... but it's defined in the ipuz
-			color_hover: '#ffffaa', // light yellow hover cursor
-			color_hilite: '#f8e473',
+			color_secondary: '#ffeca0', // yellow reference highlight
+			color_hover: '#ffffaa', // light yellow hover cursor (if enabled)
+			color_hilite: '#f8e473', // darker yellow clue-finder hover (if enabled)
 			font_color_clue: '#ffffff',
 			background_color_clue: '#666666',
 			hover_enabled: false,
+			hilite_enabled: false,
 			puzzle_file: null,
 			puzzles: null,
 			skip_filled_letters: true,
@@ -769,6 +771,7 @@ function adjustColor(color, amount) {
 					this.words[word.id] = new Word(this, {
 						id: word.id,
 						dir: word.dir,
+						refs_raw: null,
 						cell_ranges: word.cells.map(function (c) {
 							var obj = {x: (c[0] + 1).toString(), y: (c[1] + 1).toString()};
 							return obj;
@@ -1168,42 +1171,34 @@ function adjustColor(color, amount) {
 						if (!cell.empty) {
 							// detect cell color
 							var color = cell.color;
-							if (
-								this.hilited_word &&
-								this.hilited_word.hasCell(cell.x, cell.y)
-							) {
-								//color = this.config.color_hilite;
+
+							// in order of precedence...
+
+							// clue list reference hover highlight
+							if (this.config.hilite_enabled && this.hilited_word && this.hilited_word.hasCell(cell.x, cell.y)) {
+								color = this.config.color_hilite;
 							}
-							if (
-								this.selected_word &&
-								this.selected_word.hasCell(cell.x, cell.y)
-							) {
-								// two cases here, depending on whether the cell is shaded
-								color = cell.shade_highlight_color || this.config.color_word;
+
+							// selected word blue
+							if (this.selected_word && this.selected_word.hasCell(cell.x, cell.y)) {
+								color = cell.shade_highlight_color || this.config.color_word; // whether shaded cell or regular
 							}
-							if (
-								this.config.hover_enabled &&
-								x == this.hovered_x &&
-								y == this.hovered_y
-							) {
+
+							// cell hover highlight
+							if (this.config.hover_enabled && x == this.hovered_x && y == this.hovered_y) {
 								color = this.config.color_hover;
 							}
-							if (
-								this.selected_cell &&
-								x == this.selected_cell.x &&
-								y == this.selected_cell.y
-							) {
+
+							// selected cell yellow
+							if (this.selected_cell && x == this.selected_cell.x && y == this.selected_cell.y) {
 								color = this.config.color_selected;
 							}
+
 							//this.context.fillStyle = this.config.color_block;
 							//this.context.fillRect(cell_x, cell_y, this.cell_size, this.cell_size);
 							// In an autofill puzzle (coded and acrostic), highlight all other cells
 							// with the same number as the selected cell
-							if (
-								this.is_autofill &&
-								cell.number == this.selected_cell.number &&
-								cell != this.selected_cell
-							) {
+							if (this.is_autofill && cell.number == this.selected_cell.number && cell != this.selected_cell) {
 								color = this.config.color_hilite;
 							}
 
@@ -1498,7 +1493,7 @@ function adjustColor(color, amount) {
 							this.moveSelectionBy(0, 1);
 						}
 						break;
-					case 32: //space
+					case 32: // space
 						if (this.selected_cell && this.selected_word) {
 							// change the behavior based on the config
 							if (this.config.space_bar === 'space_switch') {
@@ -1998,7 +1993,12 @@ function adjustColor(color, amount) {
 						<div class="settings-option">
 							<label class="settings-label">
 								<input id="hover_enabled" checked="" type="checkbox" name="hover_enabled" class="settings-changer">
-									Show hover while moving mouse over grid
+									Show cell hover while mousing over grid
+								</input>
+							</label>
+							<label class="settings-label">
+								<input id="hilite_enabled" checked="" type="checkbox" name="hilite_enabled" class="settings-changer">
+									Highlight corresponding words while mousing over clues
 								</input>
 							</label>
 						</div>
@@ -2441,18 +2441,21 @@ function adjustColor(color, amount) {
 				this.cell_ranges = [];
 				this.cells = [];
 				this.clue = {};
+				this.refs_raw = [];
 				this.crossword = crossword;
 				if (data) {
 					if (
 						data.hasOwnProperty('id') &&
 						data.hasOwnProperty('dir') &&
 						data.hasOwnProperty('cell_ranges') &&
-						data.hasOwnProperty('clue')
+						data.hasOwnProperty('clue') &&
+						data.hasOwnProperty('refs_raw')
 					) {
 						this.id = data.id;
 						this.dir = data.dir;
 						this.cell_ranges = data.cell_ranges;
 						this.clue = data.clue;
+						this.refs_raw = data.clue.refs;
 						this.parseRanges();
 					} else {
 						load_error = true;
