@@ -322,6 +322,14 @@ function adjustColor(color, amount) {
 				// return true;
 			// }
 
+			if (entry) {
+				entry = entry.toUpperCase();
+			}
+			if (solution) { // blank cells, maybe?
+				solution = solution.toUpperCase();
+			}
+			console.log("entry: ", entry, "  solution: ", solution);
+
 			// schrödinger squares/multiple answers
 			if (entry && (solution.constructor === Array)) {
 				// go through the multiple answers. if any one is entered, it's correct
@@ -1046,7 +1054,6 @@ function adjustColor(color, amount) {
 			}
 
 			setActiveWord(word) {
-				console.log(word);
 				if (word) { // if null, clicked on a block
 					this.selected_word = word;
 
@@ -1382,7 +1389,6 @@ function adjustColor(color, amount) {
 								this.cell_size / (1.1 + 0.5 * cell_letter_length) +
 								'px sans-serif';
 							if (cell.revealed && cell.letter != '#' && cell.letter != '.') { // keep blocks black
-								// this.context.font = 'italic ' + this.context.font;
 								this.context.fillStyle = this.config.revealed_letter;
 							}
 							if (cell.checked) {
