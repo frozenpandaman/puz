@@ -7,120 +7,120 @@
 function parseXml(e,r){let t=null;if(window.DOMParser)t=(new DOMParser).parseFromString(e,"text/xml");else{if(!window.ActiveXObject)throw new Error("cannot parse xml string!");if((t=new ActiveXObject("Microsoft.XMLDOM")).async=!1,!t.loadXML(e))throw t.parseError.reason+" "+t.parseError.srcText}function o(e,t){if("#text"==e.nodeName){let r=e.nodeValue;return void(r.trim()&&(t["#text"]=r))}let n={},a=t[e.nodeName];if(a?Array.isArray(a)?t[e.nodeName].push(n):t[e.nodeName]=[a,n]:r&&-1!=r.indexOf(e.nodeName)?t[e.nodeName]=[n]:t[e.nodeName]=n,e.attributes)for(let r of e.attributes)n[r.nodeName]=r.nodeValue;for(let r of e.childNodes)o(r,n)}let n={};for(let e of t.childNodes)o(e,n);return n}
 
 function xw_read_cfp(xml) {
-  // Read the XML into an object
-  var dataObj = parseXml(xml);
-  dataObj = dataObj.CROSSFIRE;
-  // Pull in the metadata
-  var grid_str = dataObj.GRID['#text'].trim();
-  var grid_arr = grid_str.split('\n');
-  var width = Number(dataObj.GRID.width);
-  var height = grid_arr.length
-  var metadata = {
-	  'title': dataObj.TITLE['#text'] || '',
-	  'author': dataObj.AUTHOR['#text'] || '',
-	  'copyright': dataObj.COPYRIGHT['#text'] || '',
-	  'description': dataObj.NOTES['#text'] || '',
-	  'height': height,
-	  'width': width,
-	  'crossword_type': 'crossword',
-  };
+	// Read the XML into an object
+	var dataObj = parseXml(xml);
+	dataObj = dataObj.CROSSFIRE;
+	// Pull in the metadata
+	var grid_str = dataObj.GRID['#text'].trim();
+	var grid_arr = grid_str.split('\n');
+	var width = Number(dataObj.GRID.width);
+	var height = grid_arr.length
+	var metadata = {
+		'title': dataObj.TITLE['#text'] || '',
+		'author': dataObj.AUTHOR['#text'] || '',
+		'copyright': dataObj.COPYRIGHT['#text'] || '',
+		'description': dataObj.NOTES['#text'] || '',
+		'height': height,
+		'width': width,
+		'crossword_type': 'crossword',
+	};
 
-  /*
-  * `cells` is an array of cells with the various attributes
+	/*
+	* `cells` is an array of cells with the various attributes
 	- x and y (0-indexed)
 	- "type" = 'block' if it's a block
 	- "number" = number if it's numbered
 	- "solution" = letter(s) that go in the box
 	- others: background-color (RGB), background-shape (circle),
 		bottom-bar, right-bar, top-bar, left-bar (= true if exist)
-  */
-  // Get circle locations if they exist
-  var circle_locations = new Set();
-  if (dataObj.CIRCLES) {
+	*/
+	// Get circle locations if they exist
+	var circle_locations = new Set();
+	if (dataObj.CIRCLES) {
 	circle_locations = new Set(dataObj.CIRCLES['#text'].split(',').map(Number));
-  }
-  // Get rebus indicators if they exist
-  var rebusObj = {};
-  if (dataObj.REBUSES) {
+	}
+	// Get rebus indicators if they exist
+	var rebusObj = {};
+	if (dataObj.REBUSES) {
 	var rebusArr = dataObj.REBUSES.REBUS;
 	if (typeof(dataObj.REBUSES.REBUS)=='object') {
-	  rebusArr = [dataObj.REBUSES.REBUS];
+		rebusArr = [dataObj.REBUSES.REBUS];
 	}
 	rebusArr.forEach( function(r) {
-	  rebusObj[r.input] = r.letters.toUpperCase();
+		rebusObj[r.input] = r.letters.toUpperCase();
 	});
-  }
-  var cells = [];
-  for (var y=0; y < height; y++) {
-	  for (var x=0; x < width; x++) {
-		  // the grid index
-		  var this_index = x + y * width;
+	}
+	var cells = [];
+	for (var y=0; y < height; y++) {
+		for (var x=0; x < width; x++) {
+			// the grid index
+			var this_index = x + y * width;
 
-		  // solution
-		  var solution = grid_arr[y].charAt(x);
-		  // replace with rebus if necessary
-		  solution = rebusObj[solution] || solution;
-		  // type
-		  var type = null;
-		  if (solution === '.') {
-			  type = 'block';
-			  solution = null;
-		  }
+			// solution
+			var solution = grid_arr[y].charAt(x);
+			// replace with rebus if necessary
+			solution = rebusObj[solution] || solution;
+			// type
+			var type = null;
+			if (solution === '.') {
+				type = 'block';
+				solution = null;
+			}
 
-		  // background shape and color
-		  background_shape = null;
-		  if (circle_locations.has(this_index)) {
+			// background shape and color
+			background_shape = null;
+			if (circle_locations.has(this_index)) {
 			background_shape = 'circle';
-		  }
+			}
 
-		  var new_cell = {
-			  x: x,
-			  y: y,
-			  solution: solution,
-			  number: null, // for now
-			  type: type,
-			  "background-shape": background_shape,
-		  };
-		  cells.push(new_cell);
-	  } // end for x
-  } // end for y
+			var new_cell = {
+				x: x,
+				y: y,
+				solution: solution,
+				number: null, // for now
+				type: type,
+				"background-shape": background_shape,
+			};
+			cells.push(new_cell);
+		} // end for x
+	} // end for y
 
-  // In order to add numbering to this we need a xwGrid object
-  var thisGrid = new xwGrid(cells);
-  var gn = thisGrid.gridNumbering();
-  cells.forEach(function(cell) {
+	// In order to add numbering to this we need a xwGrid object
+	var thisGrid = new xwGrid(cells);
+	var gn = thisGrid.gridNumbering();
+	cells.forEach(function(cell) {
 	var thisNumber = gn[cell.y][cell.x];
 	if (thisNumber) {
-	  cell.number = thisNumber.toString();
+		cell.number = thisNumber.toString();
 	}
-  });
+	});
 
-  /*
-  * `clues` is an array of (usually) two objects.
+	/*
+	* `clues` is an array of (usually) two objects.
 	 each object within has a "title" key whose value is generally "ACROSS" or "DOWN"
 	 and a "clue" key, whose value is an array of clues.
 	 Each "clue" key has
-	   - a "text" value which is the actual clue
-	   - a "word" which is the associated word ID
-	   - an optional "number"
-  */
-  var words = [];
-  // Iterate through the titles of the clues
-  var entries = {'ACROSS': thisGrid.acrossEntries(), 'DOWN': thisGrid.downEntries()};
-  var clues1 = {'ACROSS': [], 'DOWN': []};
-  // clues and words are coupled in .cfp
-  dataObj.WORDS.WORD.forEach( function(w) {
-	  var word_id = Number(w.id) + 1000; // we don't want an ID of 0
-	  var number = w.num;
-	  var text = w['#text'];
-	  var thisDir = w.dir;
-	  clues1[thisDir].push({'word': word_id, 'number': number, 'text': text});
-	  var thisCells = entries[thisDir][Number(number)].cells;
-	  words.push({'id': word_id, 'cells': thisCells});
-  });
-  var clues = [{'title': 'ACROSS', 'clue': clues1['ACROSS']}, {'title': 'DOWN', 'clue': clues1['DOWN']}];
+		 - a "text" value which is the actual clue
+		 - a "word" which is the associated word ID
+		 - an optional "number"
+	*/
+	var words = [];
+	// Iterate through the titles of the clues
+	var entries = {'ACROSS': thisGrid.acrossEntries(), 'DOWN': thisGrid.downEntries()};
+	var clues1 = {'ACROSS': [], 'DOWN': []};
+	// clues and words are coupled in .cfp
+	dataObj.WORDS.WORD.forEach( function(w) {
+		var word_id = Number(w.id) + 1000; // we don't want an ID of 0
+		var number = w.num;
+		var text = w['#text'];
+		var thisDir = w.dir;
+		clues1[thisDir].push({'word': word_id, 'number': number, 'text': text});
+		var thisCells = entries[thisDir][Number(number)].cells;
+		words.push({'id': word_id, 'cells': thisCells});
+	});
+	var clues = [{'title': 'ACROSS', 'clue': clues1['ACROSS']}, {'title': 'DOWN', 'clue': clues1['DOWN']}];
 
-  return new JSCrossword(metadata, cells, words, clues);
+	return new JSCrossword(metadata, cells, words, clues);
 }
 
 function xw_write_cfp(metadata, cells, words, clues) {
@@ -170,12 +170,12 @@ function xw_read_ipuz(data) {
 
 	/*
 	* `cells` is an array of cells with the various attributes
-	  - x and y (0-indexed)
-	  - "type" = 'block' if it's a block
-	  - "number" = number if it's numbered
-	  - "solution" = letter(s) that go in the box
-	  - others: background-color (RGB), background-shape (circle),
-		  bottom-bar, right-bar, top-bar, left-bar (= true if exist)
+		- x and y (0-indexed)
+		- "type" = 'block' if it's a block
+		- "number" = number if it's numbered
+		- "solution" = letter(s) that go in the box
+		- others: background-color (RGB), background-shape (circle),
+			bottom-bar, right-bar, top-bar, left-bar (= true if exist)
 	*/
 	var cells = [];
 	for (var y=0; y < height; y++) {
@@ -233,7 +233,7 @@ function xw_read_ipuz(data) {
 			// official iPuz style is RGB without a "#"
 			// we add that if it's missing
 			if (background_color && background_color.match('^[A-Fa-f0-9]{6}$')) {
-			  background_color = '#' + background_color.toString();
+				background_color = '#' + background_color.toString();
 			}
 			// top-right numbers
 			var top_right_number = null;
@@ -275,9 +275,9 @@ function xw_read_ipuz(data) {
 
 	/*
 	* `clues` is an array of (usually) two objects.
-	   each object within has a "title" key whose value is generally "ACROSS" or "DOWN"
-	   and a "clue" key, whose value is an array of clues.
-	   Each "clue" key has
+		 each object within has a "title" key whose value is generally "ACROSS" or "DOWN"
+		 and a "clue" key, whose value is an array of clues.
+		 Each "clue" key has
 		 - a "text" value which is the actual clue
 		 - a "word" which is the associated word ID
 		 - an optional "number"
@@ -289,7 +289,7 @@ function xw_read_ipuz(data) {
 	var titles = Object.keys(data['clues']);
 	// Change the order if it's down first (CrossFire export bug)
 	if (titles[0].toLowerCase() == 'down' && titles[1].toLowerCase() == 'across') {
-	  titles = [titles[1], titles[0]];
+		titles = [titles[1], titles[0]];
 	}
 	titles.forEach( function(title) {
 		var thisClues = [];
@@ -319,8 +319,8 @@ function xw_read_ipuz(data) {
 
 	/*
 	* `words` is an array of objects, each with an "id" and a "cells" attribute
-	  "id" is just a unique number to match up with the clues.
-	  "cells" is an array of objects giving the x and y values, in order
+		"id" is just a unique number to match up with the clues.
+		"cells" is an array of objects giving the x and y values, in order
 	*/
 	// We only do this if we haven't already populated `words`
 	if (!words.length) {
@@ -372,13 +372,13 @@ function XMLElementToString(element) {
 		if (node.nodeType === 1) {
 			 nodename = node.nodeName;
 			 result +=
-			   '<' +
-			   nodename +
-			   '>' +
-			   XMLElementToString(node) +
-			   '</' +
-			   nodename +
-			   '>';
+				 '<' +
+				 nodename +
+				 '>' +
+				 XMLElementToString(node) +
+				 '</' +
+				 nodename +
+				 '>';
 		}
 	}
  return result;
@@ -420,8 +420,8 @@ function xw_read_jpz(data1) {
 	}
 	else {
 		throw {
-		  name: ERR_PARSE_JPZ,
-		  message: 'Could not find puzzle data'
+			name: ERR_PARSE_JPZ,
+			message: 'Could not find puzzle data'
 		};
 	}
 
@@ -441,8 +441,8 @@ function xw_read_jpz(data1) {
 	jpz_metadata = puzzle[0].getElementsByTagName('metadata');
 	if (!jpz_metadata.length) {
 		throw {
-		  name: ERR_PARSE_JPZ,
-		  message: 'Could not find metadata'
+			name: ERR_PARSE_JPZ,
+			message: 'Could not find metadata'
 		};
 	}
 
@@ -516,15 +516,15 @@ function xw_read_jpz(data1) {
 
 		// if there's a "hint" attribute we replace the "letter" attribute
 		if (cell.getAttribute('hint') === 'true') {
-		  new_cell['letter'] = new_cell['solution'];
+			new_cell['letter'] = new_cell['solution'];
 		}
 
 		// for barred puzzles
 		if (
-		  cell.getAttribute('top-bar') ||
-		  cell.getAttribute('bottom-bar') ||
-		  cell.getAttribute('left-bar') ||
-		  cell.getAttribute('right-bar')
+			cell.getAttribute('top-bar') ||
+			cell.getAttribute('bottom-bar') ||
+			cell.getAttribute('left-bar') ||
+			cell.getAttribute('right-bar')
 		) {
 			new_cell['top-bar'] = cell.getAttribute('top-bar') === 'true';
 			new_cell['bottom-bar'] = cell.getAttribute('bottom-bar') === 'true';
@@ -538,10 +538,10 @@ function xw_read_jpz(data1) {
 	var words = [];
 	// helper function to get cell values from "x" and "y" strings
 	function cells_from_xy(x, y) {
-	  var word_cells = [];
-	  var split_x = x.split('-');
-	  var split_y = y.split('-');
-	  if (split_x.length > 1) {
+		var word_cells = [];
+		var split_x = x.split('-');
+		var split_y = y.split('-');
+		if (split_x.length > 1) {
 		var x_from = Number(split_x[0]); var x_to = Number(split_x[1]);
 		var y1 = Number(split_y[0]);
 		for (var k=x_from;
@@ -549,7 +549,7 @@ function xw_read_jpz(data1) {
 			(x_from < x_to ? k++ : k--)) {
 			word_cells.push([k-1, y1-1]);
 		}
-	  } else if (split_y.length > 1) {
+		} else if (split_y.length > 1) {
 		var y_from = Number(split_y[0]); var y_to = Number(split_y[1]);
 		var x1 = Number(split_x[0]);
 		for (var k=y_from;
@@ -557,10 +557,10 @@ function xw_read_jpz(data1) {
 			(y_from < y_to ? k++ : k--)) {
 			word_cells.push([x1-1, k-1]);
 		}
-	  } else {
-		  word_cells.push([split_x[0]-1, split_y[0]-1]);
-	  }
-	  return word_cells;
+		} else {
+			word_cells.push([split_x[0]-1, split_y[0]-1]);
+		}
+		return word_cells;
 	}
 	for (i = 0; (word = xml_words[i]); i++) {
 		var id = word.getAttribute('id');
@@ -644,7 +644,7 @@ function xw_write_jpz(metadata, cells, words, clues) {
 			}
 			// AFAIK if this value is "null" or "false" it does not hurt to exclude it
 			if (my_val) {
-			  clue_attrs += `${my_key}="${my_val}" `;
+				clue_attrs += `${my_key}="${my_val}" `;
 			}
 		}
 		jpz_string += `        <cell ${clue_attrs} />\n`;
@@ -703,23 +703,23 @@ class xwGrid {
 	/* check if we have a black square in a given direction */
 	hasBlack(x, y, dir) {
 		var mapping_dict = {
-		  'right': {'xcheck': this.width-1, 'xoffset': 1, 'yoffset': 0, 'dir2': 'left'}
+		'right': {'xcheck': this.width-1, 'xoffset': 1, 'yoffset': 0, 'dir2': 'left'}
 		, 'left': {'xcheck': 0, 'xoffset': -1, 'yoffset': 0, 'dir2': 'right'}
 		, 'top': {'ycheck': 0, 'xoffset': 0, 'yoffset': -1, 'dir2': 'bottom'}
 		, 'bottom': {'ycheck': this.height-1, 'xoffset': 0, 'yoffset': 1, 'dir2': 'top'}
 		};
 		var md = mapping_dict[dir];
 		if (x === md['xcheck'] || y === md['ycheck']) {
-		  return true;
+			return true;
 		}
 		else if (this.isBlack(x + md['xoffset'], y + md['yoffset'])) {
-		  return true;
+			return true;
 		}
 		else if (this.cellAt(x, y)[dir + '-bar']) {
-		  return true;
+			return true;
 		}
 		else if (this.cellAt(x + md['xoffset'], y + md['yoffset'])[md['dir2'] + '-bar']) {
-		  return true;
+			return true;
 		}
 		return false;
 	}
@@ -830,8 +830,8 @@ function BinaryStringToUTF8String(x) {
 	// convert to bytes array
 	var bytes = [];
 	for (var i = 0; i < x.length; ++i) {
-	  var code = x.charCodeAt(i);
-	  bytes.push([code]);
+		var code = x.charCodeAt(i);
+		bytes.push([code]);
 	}
 	var bytes1 = new Uint8Array(bytes);
 	return new TextDecoder("utf-8").decode(bytes1);
@@ -871,29 +871,29 @@ function file_download(data, filename, type) {
 class JSCrossword {
 	/*
 	* `metadata` has
-	  - title, author, copyright, description (notes)
-	  - height, width
-	  - crossword_type (crossword, coded, acrostic)
-	  OPTIONAL:
-	  - has_reveal (default: true)
-	  - completion_message
+		- title, author, copyright, description (notes)
+		- height, width
+		- crossword_type (crossword, coded, acrostic)
+		OPTIONAL:
+		- has_reveal (default: true)
+		- completion_message
 	* `cells` is an array of cells with the various attributes
-	  - x and y (0-indexed)
-	  - "type" = 'block' if it's a block
-	  - "number" = number if it's numbered
-	  - "solution" = letter(s) that go in the box
-	  - others: background-color (RGB), background-shape (circle),
-		  bottom-bar, right-bar, top-bar, left-bar (= true if exist)
-		  top_right_number
-		  value (a filled-in letter, if any)
+		- x and y (0-indexed)
+		- "type" = 'block' if it's a block
+		- "number" = number if it's numbered
+		- "solution" = letter(s) that go in the box
+		- others: background-color (RGB), background-shape (circle),
+			bottom-bar, right-bar, top-bar, left-bar (= true if exist)
+			top_right_number
+			value (a filled-in letter, if any)
 
 	* `words` is an array of objects, each with an "id" and a "cells" attribute
-	  "id" is just a unique number to match up with the clues.
-	  "cells" is an array of objects giving the x and y values, in order
+		"id" is just a unique number to match up with the clues.
+		"cells" is an array of objects giving the x and y values, in order
 	* `clues` is an array of (usually) two objects.
-	   each object within has a "title" key whose value is generally "ACROSS" or "DOWN"
-	   and a "clue" key, whose value is an array of clues.
-	   Each "clue" key has
+		 each object within has a "title" key whose value is generally "ACROSS" or "DOWN"
+		 and a "clue" key, whose value is an array of clues.
+		 Each "clue" key has
 		 - a "text" value which is the actual clue
 		 - a "word" which is the associated word ID
 		 - an optional "number"
@@ -1009,15 +1009,15 @@ class JSCrossword {
 			} catch (error2) {
 				// console.log(error2);
 				try {
-				  js = xw_read_jpz(data);
+					js = xw_read_jpz(data);
 				} catch (error3) {
-				  console.log(error3);
-				  try {
+					console.log(error3);
+					try {
 					js = xw_read_cfp(data);
-				  } catch (error4) {
+					} catch (error4) {
 					console.log("Cannot open file.");
 					console.log(error4);
-				  }
+					}
 				}
 			}
 		}
@@ -1641,23 +1641,23 @@ function splitNulls(buf, encoding) {
 }
 
 function checksum(base, c, len) {
-  if (c === undefined)
+	if (c === undefined)
 	c = 0x0000;
 
-  if (base === undefined)
+	if (base === undefined)
 	return c;
 
-  if (len === undefined)
+	if (len === undefined)
 	len = base.length;
 
-  for (let i = 0; i < len; i++) {
+	for (let i = 0; i < len; i++) {
 	if (c & 0x0001)
-	  c = ((c >>> 1) + 0x8000) & 0xFFFF;
+		c = ((c >>> 1) + 0x8000) & 0xFFFF;
 	else
-	  c = (c >>> 1);
+		c = (c >>> 1);
 	c = (c + base[i]) & 0xFFFF;
-  }
-  return c;
+	}
+	return c;
 }
 
 function concatBytes(a, b) {
@@ -1821,19 +1821,19 @@ function puzapp_to_puzpayload(puzdata) {
 	var pp_clues = [];
 	// Sort the entries by number then direction
 	puzdata.all_entries.sort(function(x, y) {
-	   if (x.Number < y.Number) {
-		   return -1;
-	   } else if (x.Number > y.Number) {
-		   return 1;
-	   }
-	   else {
-		   if (x.Direction < y.Direction) {
-			   return -1;
-		   } else if (x.Direction > y.Direction) {
-			   return 1;
-		   }
-	   }
-	   return 0;
+		 if (x.Number < y.Number) {
+			 return -1;
+		 } else if (x.Number > y.Number) {
+			 return 1;
+		 }
+		 else {
+			 if (x.Direction < y.Direction) {
+				 return -1;
+			 } else if (x.Direction > y.Direction) {
+				 return 1;
+			 }
+		 }
+		 return 0;
 	});
 	for (var i=0; i<puzdata.all_entries.length; i++) {
 		pp_clues.push(puzdata.all_entries[i].Clue);
@@ -1851,7 +1851,7 @@ function puzapp_to_puzpayload(puzdata) {
 function jscrossword_from_puz(puzdata) {
 	/* metadata */
 	var metadata = {
-	  "title": puzdata.title.trim()
+		"title": puzdata.title.trim()
 	, "author": puzdata.author.trim()
 	, "copyright": puzdata.copyright.trim()
 	, "description": puzdata.notes.trim()
@@ -1863,13 +1863,13 @@ function jscrossword_from_puz(puzdata) {
 	/* Rebus table (if needed) */
 	var rebus_table = {};
 	if (puzdata.rtbl) {
-	  var rtbl_arr = puzdata.rtbl.split(';')
-	  rtbl_arr.forEach(function (x) {
+		var rtbl_arr = puzdata.rtbl.split(';')
+		rtbl_arr.forEach(function (x) {
 		if (x.includes(':')) {
-		  var thisArr = x.split(':');
-		  rebus_table[Number(thisArr[0])] = thisArr[1];
+			var thisArr = x.split(':');
+			rebus_table[Number(thisArr[0])] = thisArr[1];
 		}
-	  });
+		});
 	}
 
 	/* cells */
@@ -1889,7 +1889,7 @@ function jscrossword_from_puz(puzdata) {
 			// already filled-in letters
 			var this_fill = puzdata.grid.charAt(ix);
 			if (this_fill !== '-' && this_fill !== '.') {
-			  cell['letter'] = this_fill;
+				cell['letter'] = this_fill;
 			}
 
 			if (puzdata.sqNbrs[ix]) {
@@ -1898,7 +1898,7 @@ function jscrossword_from_puz(puzdata) {
 			// circles
 			if (puzdata.gext) {
 				if (puzdata.gext[ix] != "\u0000") {
-				  cell['background-shape'] = 'circle';
+					cell['background-shape'] = 'circle';
 				}
 			}
 			// rebus
