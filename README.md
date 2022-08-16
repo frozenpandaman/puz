@@ -42,7 +42,7 @@ The following file formats are supported:
    * [Crossword Grid Search](https://ugleh.com/gridsearch/)
  * Clueing & fill
    * [XWordInfo Finder](https://www.xwordinfo.com/Finder) &amp; [Clue Search](https://www.xwordinfo.com/SearchClues) &nbsp;•&nbsp; [cluer](https://tiwwdty.com/clue/) (Matt Ginsberg's clue database)
-   * [BlockQuarry](https://blockquarry.net/) &nbsp;•&nbsp; [OneLook Dictionary Search](https://www.onelook.com/) &nbsp;•&nbsp; [Qat](https://www.quinapalus.com/cgi-bin/qat)
+   * [Block Quarry](https://blockquarry.net/) &nbsp;•&nbsp; [OneLook Dictionary Search](https://www.onelook.com/) &nbsp;•&nbsp; [Qat](https://www.quinapalus.com/cgi-bin/qat)
  * Wordlists & tools
    * [spread the word(list)](https://www.spreadthewordlist.com/wordlist) &nbsp;•&nbsp; [Peter Broda's Wordlist](https://peterbroda.me/crosswords/wordlist/) &nbsp;•&nbsp; [Et Tu, Etui?](https://ettuetui.blogspot.com/2021/07/one-year-of-et-tu-etui.html) (memes) &nbsp;•&nbsp; [more](https://old.reddit.com/r/crossword/comments/nqsuku/all_the_downloadable_word_lists_ive_been_able_to/)
    * [Wordlisted](https://aaronson.org/wordlisted/)
